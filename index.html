@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Zoom is allowed on purpose: many players are older adults who pinch-zoom to read. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#1e40af" />
+  <title>Cabaran Wira Ubat MyCHAMPION 2026</title>
+  <!-- No external CSS/JS: the page works on patchy mosque Wi-Fi once it has loaded. -->
+  <style>
+    :root {
+      --blue-50: #eff6ff;  --blue-100: #dbeafe; --blue-200: #bfdbfe; --blue-600: #2563eb;
+      --blue-700: #1d4ed8; --blue-800: #1e40af; --indigo-900: #312e81;
+      --slate-50: #f8fafc; --slate-100: #f1f5f9; --slate-200: #e2e8f0; --slate-300: #cbd5e1;
+      --slate-500: #64748b; --slate-600: #475569; --slate-700: #334155; --slate-800: #1e293b; --slate-900: #0f172a;
+      --green-50: #ecfdf5; --green-100: #d1fae5; --green-500: #10b981; --green-600: #059669;
+      --green-700: #047857; --green-800: #065f46; --green-900: #064e3b;
+      --rose-50: #fff1f2; --rose-500: #e11d48; --rose-900: #881337;
+      --amber-50: #fffbeb; --amber-100: #fef3c7; --amber-500: #f59e0b; --amber-800: #92400e;
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      background: var(--slate-100);
+      color: var(--slate-800);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      font-size: 17px;
+      line-height: 1.5;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+    button, input { font: inherit; }
+    button { cursor: pointer; -webkit-user-select: none; user-select: none; }
+    input { -webkit-user-select: text; user-select: text; }
+    :focus-visible { outline: 3px solid var(--amber-500); outline-offset: 2px; }
+    [hidden] { display: none !important; }
+
+    .app {
+      width: 100%;
+      max-width: 30rem;
+      min-height: calc(100dvh - 24px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid var(--slate-200);
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, .08);
+    }
+
+    /* Header */
+    .top {
+      padding: 16px;
+      text-align: center;
+      color: #fff;
+      background: linear-gradient(90deg, var(--blue-700), var(--blue-800), var(--indigo-900));
+    }
+    .top-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: var(--blue-100);
+    }
+    .top h1 { margin: 4px 0 2px; font-size: 1.35rem; font-weight: 900; letter-spacing: -.01em; line-height: 1.2; }
+    .top p { margin: 0; font-size: .9rem; color: var(--blue-100); }
+
+    main { flex: 1; display: flex; flex-direction: column; padding: 20px; }
+    .screen { flex: 1; display: flex; flex-direction: column; }
+    .center { text-align: center; }
+
+    /* Shared bits */
+    .icon-tile {
+      width: 80px; height: 80px; margin: 8px auto 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem;
+      background: var(--blue-50);
+      border: 1px solid var(--blue-100);
+      border-radius: 24px;
+    }
+    .pill {
+      display: inline-block;
+      padding: 4px 14px;
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--amber-800);
+      background: var(--amber-100);
+      border-radius: 999px;
+    }
+    .pulse { animation: pulse 2s infinite ease-in-out; }
+    @keyframes pulse { 50% { transform: scale(1.03); } }
+    @media (prefers-reduced-motion: reduce) { .pulse { animation: none; } * { transition: none !important; } }
+
+    h2 { margin: 12px 0 8px; font-size: 1.5rem; font-weight: 900; color: var(--slate-900); line-height: 1.25; }
+    .lead { margin: 0 0 20px; color: var(--slate-600); }
+
+    .panel {
+      padding: 16px;
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+    }
+    .round-list { list-style: none; margin: 0 0 20px; text-align: left; font-size: .95rem; color: var(--slate-700); }
+    .round-list li { display: flex; gap: 10px; }
+    .round-list li + li { margin-top: 8px; }
+    .round-list b { color: var(--green-600); }
+
+    .btn {
+      width: 100%;
+      padding: 16px;
+      border: 0;
+      border-radius: var(--radius);
+      font-weight: 800;
+      transition: transform .1s, background-color .15s;
+    }
+    .btn:active { transform: scale(.98); }
+    .btn:disabled { opacity: .7; cursor: wait; }
+    .btn-primary { color: #fff; background: var(--blue-700); box-shadow: 0 8px 20px rgba(29, 78, 216, .25); }
+    .btn-primary:hover { background: var(--blue-800); }
+    .btn-dark { color: #fff; background: var(--slate-900); }
+    .btn-light { color: var(--blue-800); background: var(--blue-50); border: 1px solid var(--blue-200); }
+
+    .resume {
+      margin: 0 0 16px;
+      padding: 12px 14px;
+      font-size: .95rem;
+      text-align: left;
+      color: var(--green-900);
+      background: var(--green-50);
+      border: 1px solid var(--green-100);
+      border-radius: var(--radius);
+    }
+    .resume button { margin-top: 8px; }
+
+    /* Game */
+    .status-row { display: flex; justify-content: space-between; gap: 8px; font-size: .9rem; font-weight: 700; color: var(--slate-600); }
+    .status-row strong { color: var(--blue-700); font-weight: 900; }
+    .progress { height: 10px; margin: 6px 0 18px; overflow: hidden; background: var(--slate-200); border-radius: 999px; }
+    .progress > div { height: 100%; width: 0; background: var(--blue-600); transition: width .3s; }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: .8rem;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      color: var(--blue-700);
+      background: var(--blue-50);
+      border-radius: 6px;
+    }
+    .question { margin: 10px 0 6px; font-size: 1.15rem; font-weight: 800; line-height: 1.4; color: var(--slate-900); }
+    .detail { margin: 0; font-size: .95rem; color: var(--slate-600); }
+
+    .answers { display: grid; gap: 10px; margin-top: 16px; }
+    .answer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      min-height: 56px;
+      padding: 14px 16px;
+      text-align: left;
+      font-weight: 700;
+      color: var(--slate-800);
+      background: #fff;
+      border: 2px solid var(--slate-200);
+      border-radius: var(--radius);
+      transition: border-color .15s, background-color .15s;
+    }
+    .answer:hover:not(:disabled) { border-color: var(--blue-600); }
+    .answer:disabled { cursor: default; }
+    .answer .mark { flex: none; font-size: 1.2rem; color: var(--slate-500); }
+    .answer.is-correct { color: var(--green-900); background: var(--green-50); border-color: var(--green-500); }
+    .answer.is-wrong { color: var(--rose-900); background: var(--rose-50); border-color: var(--rose-500); }
+    .answer.is-dim { opacity: .55; }
+
+    .feedback { margin-top: 16px; padding: 16px; border-radius: var(--radius); color: #fff; }
+    .feedback.good { background: var(--green-700); }
+    .feedback.info { background: var(--slate-800); }
+    .feedback-head { display: flex; align-items: flex-start; gap: 12px; }
+    .feedback-icon { font-size: 1.6rem; line-height: 1; }
+    .feedback-title { margin: 0; font-weight: 900; }
+    .feedback-desc { margin: 4px 0 0; font-size: .95rem; }
+    .feedback .btn { margin-top: 14px; padding: 12px; color: var(--slate-900); background: #fff; }
+
+    /* Claim */
+    .trophy {
+      width: 64px; height: 64px; margin: 0 auto 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+      background: var(--green-50);
+      border: 1px solid var(--green-100);
+      border-radius: 50%;
+    }
+    .final-score { margin: 4px 0 16px; font-size: 1.8rem; font-weight: 900; color: var(--green-600); }
+    .form { text-align: left; }
+    .form > p { margin: 0 0 12px; font-weight: 800; color: var(--slate-700); }
+    .field + .field { margin-top: 12px; }
+    .field label { display: block; margin-bottom: 4px; font-size: .9rem; font-weight: 700; color: var(--slate-600); }
+    .field input {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 1rem;
+      background: #fff;
+      border: 1px solid var(--slate-300);
+      border-radius: 12px;
+    }
+    .field input:focus { outline: none; border-color: var(--blue-600); box-shadow: 0 0 0 3px var(--blue-100); }
+    .consent { display: flex; gap: 10px; align-items: flex-start; margin: 14px 0 4px; font-size: .9rem; color: var(--slate-700); }
+    .consent input { width: 22px; height: 22px; margin: 1px 0 0; flex: none; accent-color: var(--blue-700); }
+    .form-error { min-height: 1.4em; margin: 6px 0 8px; font-size: .9rem; font-weight: 700; color: var(--rose-500); }
+
+    .voucher {
+      position: relative;
+      padding: 20px 16px;
+      background: linear-gradient(var(--green-50), #f4fdf9);
+      border: 2px dashed var(--green-500);
+      border-radius: var(--radius);
+    }
+    .voucher-label {
+      display: inline-block;
+      padding: 2px 12px;
+      font-size: .75rem;
+      font-weight: 900;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--green-600);
+      border-radius: 999px;
+    }
+    .voucher-name { margin: 10px 0 0; font-weight: 800; color: var(--slate-800); word-break: break-word; }
+    .voucher-code {
+      margin: 12px 0;
+      padding: 12px;
+      font-family: ui-monospace, "SF Mono", Consolas, monospace;
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: .12em;
+      color: var(--green-800);
+      background: #fff;
+      border: 2px solid var(--green-500);
+      border-radius: 12px;
+    }
+    .voucher-status { margin: 0; font-size: .95rem; font-weight: 700; color: var(--green-800); }
+    .voucher-status.warn { color: var(--amber-800); }
+    .fineprint { margin: 10px 0 0; font-size: .85rem; color: var(--slate-600); }
+
+    .footer { padding-top: 20px; font-size: .85rem; text-align: center; color: var(--slate-600); }
+    .footer a { color: var(--blue-700); font-weight: 700; }
+  </style>
+</head>
+<body>
+
+  <div class="app">
+
+    <header class="top">
+      <div class="top-meta">
+        <span>PKD Timur Laut</span>
+        <span>BMSS 2026</span>
+      </div>
+      <h1>WIRA UBAT MyCHAMPION</h1>
+      <p>Kenali Ubat Anda &bull; Masjid Negeri Pulau Pinang</p>
+    </header>
+
+    <main>
+
+      <!-- ================= 1. START SCREEN ================= -->
+      <section id="screen-start" class="screen center">
+        <div class="icon-tile" aria-hidden="true">💊</div>
+        <div><span class="pill pulse">Masa Permainan: ~3-5 Minit</span></div>
+        <h2>Uji Pengetahuan Ubat Anda!</h2>
+        <p class="lead">
+          Selesaikan 3 pusingan pantas mengenai pendaftaran ubat, konsep 5B, dan pelupusan selamat untuk menebus cenderahati di kaunter farmasi.
+        </p>
+
+        <ul class="panel round-list">
+          <li><b aria-hidden="true">✓</b><span>Pusingan 1: Detektif Ubat Sah (MAL &amp; Hologram FarmaTag™)</span></li>
+          <li><b aria-hidden="true">✓</b><span>Pusingan 2: Konsep 5B, Penyimpanan &amp; Pelupusan</span></li>
+          <li><b aria-hidden="true">✓</b><span>Pusingan 3: Kuiz Kilat: Mitos vs Fakta</span></li>
+        </ul>
+
+        <div id="resume-box" class="resume" hidden>
+          Telefon ini sudah menerima baucar <strong id="resume-code"></strong>.
+          <button type="button" class="btn btn-light" onclick="showSavedVoucher()">Lihat Baucar Saya</button>
+        </div>
+
+        <button type="button" class="btn btn-primary" onclick="startGame()">MULA CABARAN SEKARANG</button>
+      </section>
+
+      <!-- ================= 2. GAMEPLAY SCREEN ================= -->
+      <section id="screen-game" class="screen" hidden>
+        <div class="status-row">
+          <span id="round-indicator">Pusingan 1/3</span>
+          <span>Skor: <strong id="live-score">0</strong></span>
+        </div>
+        <div class="progress" role="progressbar" aria-label="Kemajuan kuiz" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress">
+          <div id="progress-bar"></div>
+        </div>
+
+        <div class="panel">
+          <span id="question-tag" class="tag">Kategori</span>
+          <h3 id="question-text" class="question" tabindex="-1">Soalan</h3>
+          <p id="question-detail" class="detail"></p>
+        </div>
+
+        <div id="answers-container" class="answers"></div>
+
+        <div id="feedback-box" class="feedback" hidden aria-live="polite">
+          <div class="feedback-head">
+            <span id="feedback-icon" class="feedback-icon" aria-hidden="true"></span>
+            <div>
+              <p id="feedback-title" class="feedback-title"></p>
+              <p id="feedback-desc" class="feedback-desc"></p>
+            </div>
+          </div>
+          <button type="button" id="next-btn" class="btn" onclick="nextQuestion()">Teruskan &rarr;</button>
+        </div>
+      </section>
+
+      <!-- ================= 3. REGISTRATION & VOUCHER SCREEN ================= -->
+      <section id="screen-claim" class="screen center" hidden>
+        <div class="trophy" aria-hidden="true">🏆</div>
+        <h2 id="claim-title" tabindex="-1">Tahniah, Wira Ubat!</h2>
+        <p class="lead" style="margin-bottom:4px">Anda telah melengkapkan cabaran Meditips Kenali Ubat Anda.</p>
+        <div class="final-score" id="final-score-display"></div>
+
+        <form id="reg-form-box" class="panel form" novalidate onsubmit="submitRegistration(event)">
+          <p>Daftar kehadiran untuk rekod &amp; tuntutan cenderahati:</p>
+
+          <div class="field">
+            <label for="player-name">Nama</label>
+            <input type="text" id="player-name" name="name" autocomplete="name" maxlength="100" placeholder="cth: Ahmad Abdullah" />
+          </div>
+
+          <div class="field">
+            <label for="player-contact">No. Telefon / E-mel</label>
+            <input type="text" id="player-contact" name="contact" autocomplete="tel" maxlength="100" placeholder="cth: 012-3456789" />
+          </div>
+
+          <label class="consent" for="player-consent">
+            <input type="checkbox" id="player-consent" name="consent" />
+            <span>Saya bersetuju maklumat ini digunakan untuk rekod kehadiran dan tuntutan cenderahati program ini sahaja.</span>
+          </label>
+
+          <p id="form-error" class="form-error" role="alert"></p>
+
+          <button type="submit" id="submit-btn" class="btn btn-primary">Jana Baucar Cenderahati Saya</button>
+        </form>
+
+        <div id="voucher-box" hidden>
+          <div class="voucher">
+            <span class="voucher-label">Baucar Cenderahati</span>
+            <p class="voucher-name" id="voucher-name"></p>
+            <div class="voucher-code" id="voucher-code">MC-XXXXX</div>
+            <p class="voucher-status" id="voucher-status"></p>
+            <p class="fineprint">Tunjukkan skrin ini kepada petugas di kaunter pameran farmasi. Satu cenderahati bagi setiap peserta berdaftar Karnival MyCHAMPION Timur Laut 2026.</p>
+          </div>
+        </div>
+
+        <div class="footer">
+          Pertanyaan ubat-ubatan: Pusat Panggilan Farmasi Kebangsaan <strong>1800-88-6722</strong><br />
+          <a href="https://www.knowyourmedicine.gov.my" target="_blank" rel="noopener">www.knowyourmedicine.gov.my</a>
+          <br /><br />
+          Anjuran Bersama Pejabat Kesihatan Daerah Timur Laut &amp; Masjid Negeri Pulau Pinang
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // -------------------------------------------------------------
+    // CONFIGURATION
+    // -------------------------------------------------------------
+    // Paste your deployed Google Apps Script web app URL (ends in /exec).
+    const GOOGLE_APPS_SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+    // true  = each phone gets one voucher (players use their own phones).
+    // false = use this if one shared tablet/kiosk is passed between players.
+    // The Google Sheet also blocks a second voucher for the same phone number / e-mail either way.
+    const ONE_VOUCHER_PER_DEVICE = true;
+
+    const POINTS_PER_QUESTION = 150;
+    const REQUEST_TIMEOUT_MS = 12000;
+    const STORAGE_PREFIX = "wiraUbat2026.";
+
+    // -------------------------------------------------------------
+    // QUESTIONS: aligned with Buku Meditips Farmasi KKM (Edisi 2025)
+    // The page number in each comment is the source page in that book.
+    // Options are shuffled at runtime, so their order here doesn't matter.
+    // -------------------------------------------------------------
+    const gameQuestions = [
+      // Pusingan 1: Detektif Ubat Sah
+      { // ms. 4-5
+        round: 1,
+        tag: "Pendaftaran Ubat",
+        question: "Produk ubat batuk menunjukkan nombor MAL12345678X dan label keselamatan hologram FarmaTag™.",
+        detail: "Adakah produk ini sah dan berdaftar dengan Kementerian Kesihatan Malaysia (KKM)?",
+        options: [
+          { text: "✅ Sah & berdaftar", correct: true, exp: "Betul! Ubat berdaftar mempunyai nombor pendaftaran MAL (MAL + 8 digit + huruf) dan label keselamatan hologram FarmaTag™. Huruf 'X' bermaksud ubat am (OTC)." },
+          { text: "❌ Tidak sah / palsu", correct: false, exp: "Kurang tepat. MAL + 8 digit + huruf 'X' ialah ubat am (OTC) yang berdaftar. Semak status di laman web NPRA atau ketulenan hologram dengan aplikasi FarmaChecker™." }
+        ]
+      },
+      { // ms. 18-19
+        round: 1,
+        tag: "Iklan & Pembelian Ubat",
+        question: "Suplemen herba di media sosial mendakwa '100% Mujarab Pulihkan Kencing Manis Dalam 3 Hari Tanpa Suntikan'.",
+        detail: "Apakah tindakan anda terhadap produk tersebut?",
+        options: [
+          { text: "Jangan beli, ia tuntutan melampau", correct: true, exp: "Tepat! Jangan terpedaya dengan tuntutan melampau seperti 'Mujarab' atau 'Terbaik'. Iklan ubat yang sah memaparkan nombor kelulusan Lembaga Iklan Ubat, cth: KKLIU 9876/EXP 31.12.2025." },
+          { text: "Beli kerana ia produk semula jadi", correct: false, exp: "Berhati-hati! Produk dengan tuntutan perubatan yang tidak munasabah disyaki dicampurkan dengan bahan terlarang. Jangan beli ubat daripada penjual yang diragui, termasuk di media sosial." }
+        ]
+      },
+      { // ms. 20, 4
+        round: 1,
+        tag: "Semakan Kosmetik",
+        question: "Krim muka mempunyai nombor bermula dengan 'NOT210901234K'.",
+        detail: "Apakah status produk ini menurut garis panduan KKM?",
+        options: [
+          { text: "Kosmetik bernotifikasi", correct: true, exp: "Tepat! Kosmetik yang sah mempunyai nombor notifikasi bermula 'NOT' (cth: NOT141203021K). Semak status notifikasi di laman web NPRA (npra.gov.my) sebelum membeli." },
+          { text: "Ubat terkawal (perlu preskripsi)", correct: false, exp: "Kurang tepat. 'NOT' ialah nombor notifikasi kosmetik. Ubat terkawal pula berdaftar dengan nombor MAL yang berakhir dengan huruf 'A'." }
+        ]
+      },
+
+      // Pusingan 2: Konsep 5B, Penyimpanan & Pelupusan
+      { // ms. 6, 8
+        round: 2,
+        tag: "Konsep 5B: Masa yang Betul",
+        question: "Label ubat menyatakan arahan: 'Ambil 3 kali sehari'. Bagaimanakah cara pengambilan yang betul?",
+        detail: "Pilih selang masa yang tepat.",
+        options: [
+          { text: "Setiap 8 jam (cth: 6 pagi, 2 petang, 10 malam)", correct: true, exp: "Tepat! Dos tiga kali sehari bermaksud setiap 8 jam. Ini panduan am. Untuk maklumat lanjut, dapatkan nasihat doktor atau ahli farmasi." },
+          { text: "Bila-bila masa, asalkan cukup 3 kali sehari", correct: false, exp: "Kurang tepat. Ambil ubat mengikut kekerapan pada label: dos tiga kali sehari = setiap 8 jam." }
+        ]
+      },
+      { // ms. 14-15
+        round: 2,
+        tag: "Penyimpanan Selamat",
+        question: "Di manakah tempat paling selamat untuk menyimpan ubat di rumah?",
+        detail: "Berdasarkan Panduan Penyimpanan Ubat di Rumah.",
+        options: [
+          { text: "Di dalam kabinet bahagian atas, jauh dari kanak-kanak", correct: true, exp: "Tepat! Simpan ubat dalam bekas asal pada suhu bilik (30°C ke bawah), jauh daripada cahaya matahari, haba, kelembapan dan kanak-kanak." },
+          { text: "Di dalam bilik mandi atau di dalam kereta", correct: false, exp: "Kurang tepat. Jauhkan ubat daripada kelembapan (bilik mandi) dan haba (di dalam kereta untuk jangka masa lama, tepi dapur memasak)." },
+          { text: "Di atas meja makan supaya tidak lupa", correct: false, exp: "Kurang tepat. Meja makan ialah tempat yang mudah dicapai kanak-kanak. Simpan ubat di dalam kabinet bahagian atas." }
+        ]
+      },
+      { // ms. 16-17
+        round: 2,
+        tag: "Pelupusan Ubat",
+        question: "Apakah cara terbaik untuk melupuskan ubat yang telah rosak atau tamat tempoh?",
+        detail: "Demi keselamatan keluarga dan alam sekitar.",
+        options: [
+          { text: "Bawa ke pusat pengumpulan ubat MyMediSAFE", correct: true, exp: "Cemerlang! Cari pusat pengumpulan berhampiran di www.mymedisafe.org.my. Ingat 5 langkah: Semak, Hapus, Bungkus, Lupus, Imbas." },
+          { text: "Buang ke tong sampah bersama sisa domestik", correct: false, exp: "Jangan! Pelupusan yang salah meninggalkan sisa ubat dalam sumber air seperti sungai dan tasik, yang dirawat untuk dijadikan air minuman." },
+          { text: "Tuang ke dalam sinki atau tandas", correct: false, exp: "Jangan! Pelupusan yang salah meninggalkan sisa ubat dalam sumber air seperti sungai dan tasik, yang dirawat untuk dijadikan air minuman." }
+        ]
+      },
+
+      // Pusingan 3: Kuiz Kilat (Mitos vs Fakta)
+      { // ms. 22
+        round: 3,
+        tag: "Antibiotik",
+        question: "Mitos atau Fakta: 'Demam, batuk dan selesema biasa perlu dirawat dengan antibiotik.'",
+        detail: "Pilih pendirian anda.",
+        options: [
+          { text: "Mitos", correct: true, exp: "Betul, ia mitos! Antibiotik hanya untuk jangkitan bakteria. Ia tidak perlu diambil jika demam, batuk, selesema atau sakit tekak disebabkan oleh virus." },
+          { text: "Fakta", correct: false, exp: "Kurang tepat, ia mitos. Penggunaan antibiotik secara tidak wajar boleh menyebabkan kerintangan antibiotik, yang boleh mengakibatkan kegagalan rawatan." }
+        ]
+      },
+      { // ms. 21
+        round: 3,
+        tag: "Perubatan Estetik",
+        question: "Mitos atau Fakta: 'Suntikan botox/filler selamat dilakukan di mana-mana salun kecantikan.'",
+        detail: "Pilih pendirian anda.",
+        options: [
+          { text: "Mitos", correct: true, exp: "Betul, ia mitos! Suntikan botox/filler ialah prosedur invasif. Pastikan 3P: Prosedur, Pengamal Perubatan (doktor berdaftar MPM dengan LCP daripada KKM) dan Premis kesihatan berdaftar (klinik/hospital)." },
+          { text: "Fakta", correct: false, exp: "Kurang tepat, ia mitos. Hanya doktor yang berkelayakan dibenarkan menjalankan prosedur invasif, di klinik atau hospital berdaftar. Pastikan 3P untuk mengelakkan kesan mudarat." }
+        ]
+      }
+    ];
+
+    // -------------------------------------------------------------
+    // STATE
+    // -------------------------------------------------------------
+    let currentQuestionIndex = 0;
+    let score = 0;
+    const $ = (id) => document.getElementById(id);
+    const maxScore = () => gameQuestions.length * POINTS_PER_QUESTION;
+    const isBackendConfigured = () => /^https:\/\/script\.google\.com\//.test(GOOGLE_APPS_SCRIPT_URL);
+
+    // localStorage can throw (private mode, blocked storage), so every access is guarded.
+    const store = {
+      get(key) {
+        try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + key)); } catch (e) { return null; }
+      },
+      set(key, value) {
+        try { localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(value)); } catch (e) { /* ignore */ }
+      }
+    };
+
+    // Short vibration on Android; iOS doesn't support it and silently skips.
+    function triggerHaptic(type = "light") {
+      if ("vibrate" in navigator) navigator.vibrate(type === "light" ? 40 : [80, 50, 80]);
+    }
+
+    function showScreen(id) {
+      ["screen-start", "screen-game", "screen-claim"].forEach((s) => { $(s).hidden = s !== id; });
+      window.scrollTo(0, 0);
+    }
+
+    function shuffle(list) {
+      const a = [...list];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    // -------------------------------------------------------------
+    // GAME
+    // -------------------------------------------------------------
+    function startGame() {
+      triggerHaptic("light");
+      currentQuestionIndex = 0;
+      score = 0;
+      showScreen("screen-game");
+      loadQuestion();
+    }
+
+    function setProgress(answeredCount) {
+      const percent = Math.round((answeredCount / gameQuestions.length) * 100);
+      $("progress-bar").style.width = percent + "%";
+      $("progress").setAttribute("aria-valuenow", String(percent));
+    }
+
+    function loadQuestion() {
+      const q = gameQuestions[currentQuestionIndex];
+
+      $("round-indicator").textContent = `Pusingan ${q.round}/3 • Soalan ${currentQuestionIndex + 1}/${gameQuestions.length}`;
+      $("live-score").textContent = score;
+      setProgress(currentQuestionIndex);
+
+      $("question-tag").textContent = q.tag;
+      $("question-text").textContent = q.question;
+      $("question-detail").textContent = q.detail;
+
+      const container = $("answers-container");
+      container.innerHTML = "";
+      shuffle(q.options).forEach((opt) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "answer";
+        btn.dataset.correct = opt.correct ? "1" : "0";
+
+        const label = document.createElement("span");
+        label.textContent = opt.text;
+        const mark = document.createElement("span");
+        mark.className = "mark";
+        mark.setAttribute("aria-hidden", "true");
+        mark.textContent = "›";
+
+        btn.append(label, mark);
+        btn.addEventListener("click", () => handleAnswer(opt, btn));
+        container.appendChild(btn);
+      });
+
+      $("feedback-box").hidden = true;
+      $("question-text").focus({ preventScroll: true });
+    }
+
+    function handleAnswer(selectedOpt, btnElement) {
+      triggerHaptic(selectedOpt.correct ? "light" : "heavy");
+
+      // Lock the answers and always reveal the right one, so a wrong pick still teaches.
+      document.querySelectorAll("#answers-container .answer").forEach((b) => {
+        b.disabled = true;
+        if (b.dataset.correct === "1") {
+          b.classList.add("is-correct");
+          b.querySelector(".mark").textContent = "✓";
+        } else if (b !== btnElement) {
+          b.classList.add("is-dim");
+        }
+      });
+
+      const box = $("feedback-box");
+      if (selectedOpt.correct) {
+        score += POINTS_PER_QUESTION;
+        $("live-score").textContent = score;
+        box.className = "feedback good";
+        $("feedback-icon").textContent = "🎉";
+        $("feedback-title").textContent = "Jawapan Tepat!";
+      } else {
+        btnElement.classList.add("is-wrong");
+        btnElement.querySelector(".mark").textContent = "✗";
+        box.className = "feedback info";
+        $("feedback-icon").textContent = "💡";
+        $("feedback-title").textContent = "Info Meditips:";
+      }
+      $("feedback-desc").textContent = selectedOpt.exp;
+      $("next-btn").innerHTML = currentQuestionIndex === gameQuestions.length - 1 ? "Lihat Keputusan &rarr;" : "Teruskan &rarr;";
+
+      setProgress(currentQuestionIndex + 1);
+      box.hidden = false;
+      box.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      $("next-btn").focus({ preventScroll: true });
+    }
+
+    function nextQuestion() {
+      triggerHaptic("light");
+      currentQuestionIndex++;
+      if (currentQuestionIndex < gameQuestions.length) {
+        loadQuestion();
+      } else {
+        showClaimScreen();
+      }
+    }
+
+    function showClaimScreen() {
+      showScreen("screen-claim");
+      $("final-score-display").textContent = `${score} / ${maxScore()}`;
+      $("claim-title").textContent = score === maxScore() ? "Cemerlang, Wira Ubat!" : "Tahniah, Wira Ubat!";
+
+      const saved = store.get("voucher");
+      if (ONE_VOUCHER_PER_DEVICE && saved) {
+        showVoucher(saved);
+      } else {
+        $("reg-form-box").hidden = false;
+        $("voucher-box").hidden = true;
+      }
+      $("claim-title").focus({ preventScroll: true });
+    }
+
+    // -------------------------------------------------------------
+    // REGISTRATION & VOUCHER
+    // -------------------------------------------------------------
+
+    // Fallback code used only when the Sheet can't be reached. The Sheet normally issues the code.
+    // Ambiguous characters (0/O, 1/I) are left out so staff can read it off a screen.
+    function generateCleanSerial() {
+      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      let code = "MC-";
+      for (let i = 0; i < 5; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
+      return code;
+    }
+
+    function validateForm(name, contact, consent) {
+      if (!name) return "Sila isi nama anda.";
+      if (!contact) return "Sila isi nombor telefon atau e-mel.";
+      const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact);
+      const digits = contact.replace(/\D/g, "");
+      const isPhone = /^\+?[\d\s-]+$/.test(contact) && digits.length >= 9 && digits.length <= 13;
+      if (!isEmail && !isPhone) return "Nombor telefon atau e-mel tidak sah. Contoh: 012-3456789";
+      if (!consent) return "Sila tandakan kotak persetujuan untuk meneruskan.";
+      return "";
+    }
+
+    // Sent as text/plain (the default for a string body) so the browser makes a "simple" request
+    // with no CORS preflight. Apps Script answers with CORS headers, so we can read the reply.
+    async function postToSheet(payload) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+      try {
+        const res = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify(payload),
+          signal: controller.signal
+        });
+        return await res.json();
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+    async function submitRegistration(event) {
+      event.preventDefault();
+      const name = $("player-name").value.trim().replace(/\s+/g, " ");
+      const contact = $("player-contact").value.trim();
+      const consent = $("player-consent").checked;
+      const submitBtn = $("submit-btn");
+
+      const error = validateForm(name, contact, consent);
+      $("form-error").textContent = error;
+      if (error) return;
+
+      triggerHaptic("light");
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Menjana Kod Baucar...";
+
+      const payload = { name, contact, consent: true, score, maxScore: maxScore() };
+      let voucher = null;
+
+      if (isBackendConfigured()) {
+        try {
+          const data = await postToSheet(payload);
+          if (data && data.status === "success") {
+            voucher = { serial: data.serial, name, state: data.existing ? (data.redeemed ? "redeemed" : "existing") : "recorded" };
+          } else {
+            console.error("Sheet rejected the record:", data);
+          }
+        } catch (err) {
+          console.warn("Sheet unreachable, saving for retry:", err);
+        }
+      }
+
+      if (!voucher) {
+        const serial = generateCleanSerial();
+        if (isBackendConfigured()) {
+          queuePending({ ...payload, serial, offline: true });
+          voucher = { serial, name, state: "pending" };
+        } else {
+          voucher = { serial, name, state: "demo" };
+        }
+      }
+
+      store.set("voucher", voucher);
+      showVoucher(voucher);
+    }
+
+    const VOUCHER_STATUS = {
+      recorded: { text: "✓ Telah direkodkan. Sila tuntut di kaunter.", warn: false },
+      existing: { text: "Nombor/e-mel ini telah didaftarkan sebelum ini. Ini kod baucar asal anda.", warn: true },
+      redeemed: { text: "Baucar untuk nombor/e-mel ini telah ditebus.", warn: true },
+      pending:  { text: "Talian internet lemah. Kod disimpan di telefon ini dan akan dihantar secara automatik. Petugas boleh merekodkannya secara manual.", warn: true },
+      demo:     { text: "Mod demo: Google Sheet belum disambungkan, jadi kod ini tidak direkodkan.", warn: true }
+    };
+
+    function showVoucher(voucher) {
+      const status = VOUCHER_STATUS[voucher.state] || VOUCHER_STATUS.recorded;
+      $("reg-form-box").hidden = true;
+      $("voucher-box").hidden = false;
+      $("voucher-code").textContent = voucher.serial;
+      $("voucher-name").textContent = voucher.name || "";
+      $("voucher-status").textContent = status.text;
+      $("voucher-status").classList.toggle("warn", status.warn);
+    }
+
+    function showSavedVoucher() {
+      const saved = store.get("voucher");
+      if (!saved) return;
+      showScreen("screen-claim");
+      $("final-score-display").textContent = "";
+      showVoucher(saved);
+    }
+
+    // -------------------------------------------------------------
+    // OFFLINE QUEUE: records that couldn't reach the Sheet are retried later
+    // -------------------------------------------------------------
+    function queuePending(record) {
+      const queue = store.get("pending") || [];
+      queue.push(record);
+      store.set("pending", queue);
+    }
+
+    let flushing = false;
+    async function flushPending() {
+      if (flushing || !isBackendConfigured() || !navigator.onLine) return;
+      const queue = store.get("pending") || [];
+      if (!queue.length) return;
+
+      flushing = true;
+      const remaining = [];
+      for (const record of queue) {
+        try {
+          const data = await postToSheet(record);
+          // "error" means the Sheet rejected it for good; retrying won't help.
+          if (!data || (data.status !== "success" && data.status !== "error")) remaining.push(record);
+        } catch (err) {
+          remaining.push(record);
+        }
+      }
+      store.set("pending", remaining);
+      flushing = false;
+
+      const saved = store.get("voucher");
+      if (!remaining.length && saved && saved.state === "pending") {
+        saved.state = "recorded";
+        store.set("voucher", saved);
+        if (!$("voucher-box").hidden) showVoucher(saved);
+      }
+    }
+
+    window.addEventListener("online", flushPending);
+    setInterval(flushPending, 60000);
+    flushPending();
+
+    // Start screen: offer the saved voucher if this phone already has one.
+    (function initStartScreen() {
+      const saved = store.get("voucher");
+      if (ONE_VOUCHER_PER_DEVICE && saved) {
+        $("resume-code").textContent = saved.serial;
+        $("resume-box").hidden = false;
+      }
+    })();
+  </script>
+</body>
+</html>
