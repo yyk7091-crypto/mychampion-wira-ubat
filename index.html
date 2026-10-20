@@ -706,7 +706,8 @@
       if (isBackendConfigured()) {
         try {
           const data = await postToSheet(payload);
-          if (data && data.status === "success") {
+          // An older backend replies "success" without issuing a code; treat that as not recorded.
+          if (data && data.status === "success" && data.serial) {
             voucher = { serial: data.serial, name, state: data.existing ? (data.redeemed ? "redeemed" : "existing") : "recorded" };
           } else {
             console.error("Sheet rejected the record:", data);
