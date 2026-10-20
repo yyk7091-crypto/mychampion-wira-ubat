@@ -15,7 +15,7 @@
       --slate-500: #64748b; --slate-600: #475569; --slate-700: #334155; --slate-800: #1e293b; --slate-900: #0f172a;
       --green-50: #ecfdf5; --green-100: #d1fae5; --green-500: #10b981; --green-600: #059669;
       --green-700: #047857; --green-800: #065f46; --green-900: #064e3b;
-      --rose-50: #fff1f2; --rose-500: #e11d48; --rose-900: #881337;
+      --rose-50: #fff1f2; --rose-100: #ffe4e6; --rose-500: #e11d48; --rose-600: #be123c; --rose-900: #881337;
       --amber-50: #fffbeb; --amber-100: #fef3c7; --amber-500: #f59e0b; --amber-800: #92400e;
       --radius: 18px;
     }
@@ -59,6 +59,7 @@
 
     /* Header */
     .top {
+      position: relative;
       padding: 16px;
       text-align: center;
       color: #fff;
@@ -84,7 +85,7 @@
     .icon-tile {
       width: 80px; height: 80px; margin: 8px auto 16px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 2.5rem;
+      font-size: 2.6rem;
       background: var(--blue-50);
       border: 1px solid var(--blue-100);
       border-radius: 24px;
@@ -100,10 +101,11 @@
     }
     .pulse { animation: pulse 2s infinite ease-in-out; }
     @keyframes pulse { 50% { transform: scale(1.03); } }
-    @media (prefers-reduced-motion: reduce) { .pulse { animation: none; } * { transition: none !important; } }
 
     h2 { margin: 12px 0 8px; font-size: 1.5rem; font-weight: 900; color: var(--slate-900); line-height: 1.25; }
+    h3 { margin: 0 0 8px; font-size: 1.05rem; font-weight: 800; color: var(--slate-800); }
     .lead { margin: 0 0 20px; color: var(--slate-600); }
+    .small { font-size: .9rem; color: var(--slate-600); }
 
     .panel {
       padding: 16px;
@@ -112,9 +114,9 @@
       border-radius: var(--radius);
     }
     .round-list { list-style: none; margin: 0 0 20px; text-align: left; font-size: .95rem; color: var(--slate-700); }
-    .round-list li { display: flex; gap: 10px; }
-    .round-list li + li { margin-top: 8px; }
-    .round-list b { color: var(--green-600); }
+    .round-list li { display: flex; gap: 10px; align-items: flex-start; }
+    .round-list li + li { margin-top: 10px; }
+    .round-list .ico { flex: none; width: 1.6em; text-align: center; }
 
     .btn {
       width: 100%;
@@ -125,10 +127,9 @@
       transition: transform .1s, background-color .15s;
     }
     .btn:active { transform: scale(.98); }
-    .btn:disabled { opacity: .7; cursor: wait; }
+    .btn:disabled { opacity: .6; cursor: default; }
     .btn-primary { color: #fff; background: var(--blue-700); box-shadow: 0 8px 20px rgba(29, 78, 216, .25); }
     .btn-primary:hover { background: var(--blue-800); }
-    .btn-dark { color: #fff; background: var(--slate-900); }
     .btn-light { color: var(--blue-800); background: var(--blue-50); border: 1px solid var(--blue-200); }
 
     .resume {
@@ -143,69 +144,262 @@
     }
     .resume button { margin-top: 8px; }
 
-    /* Game */
-    .status-row { display: flex; justify-content: space-between; gap: 8px; font-size: .9rem; font-weight: 700; color: var(--slate-600); }
-    .status-row strong { color: var(--blue-700); font-weight: 900; }
-    .progress { height: 10px; margin: 6px 0 18px; overflow: hidden; background: var(--slate-200); border-radius: 999px; }
-    .progress > div { height: 100%; width: 0; background: var(--blue-600); transition: width .3s; }
-
-    .tag {
-      display: inline-block;
-      padding: 2px 8px;
+    /* Stage intro */
+    .stage-badge {
+      align-self: center;
+      padding: 4px 12px;
       font-size: .8rem;
       font-weight: 800;
-      letter-spacing: .04em;
+      letter-spacing: .05em;
       text-transform: uppercase;
-      color: var(--blue-700);
+      color: var(--blue-800);
       background: var(--blue-50);
-      border-radius: 6px;
+      border-radius: 999px;
     }
-    .question { margin: 10px 0 6px; font-size: 1.15rem; font-weight: 800; line-height: 1.4; color: var(--slate-900); }
-    .detail { margin: 0; font-size: .95rem; color: var(--slate-600); }
+    .tips { margin: 0 0 20px; text-align: left; }
+    .tips-title { margin: 0 0 6px; font-weight: 800; color: var(--slate-800); }
+    .tips ul { margin: 0; padding-left: 1.2em; font-size: .95rem; color: var(--slate-700); }
+    .tips li + li { margin-top: 4px; }
 
-    .answers { display: grid; gap: 10px; margin-top: 16px; }
-    .answer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      width: 100%;
-      min-height: 56px;
-      padding: 14px 16px;
-      text-align: left;
-      font-weight: 700;
-      color: var(--slate-800);
-      background: #fff;
-      border: 2px solid var(--slate-200);
-      border-radius: var(--radius);
-      transition: border-color .15s, background-color .15s;
+    /* In-game HUD */
+    .hud { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: .9rem; font-weight: 700; color: var(--slate-600); }
+    .hud strong { color: var(--blue-700); font-weight: 900; }
+    .hud-right { display: flex; align-items: center; gap: 10px; }
+    .mute {
+      width: 36px; height: 36px; padding: 0;
+      font-size: 1.1rem;
+      background: var(--slate-100);
+      border: 1px solid var(--slate-200);
+      border-radius: 50%;
     }
-    .answer:hover:not(:disabled) { border-color: var(--blue-600); }
-    .answer:disabled { cursor: default; }
-    .answer .mark { flex: none; font-size: 1.2rem; color: var(--slate-500); }
-    .answer.is-correct { color: var(--green-900); background: var(--green-50); border-color: var(--green-500); }
-    .answer.is-wrong { color: var(--rose-900); background: var(--rose-50); border-color: var(--rose-500); }
-    .answer.is-dim { opacity: .55; }
+    .progress { height: 10px; margin: 6px 0 16px; overflow: hidden; background: var(--slate-200); border-radius: 999px; }
+    .progress > div { height: 100%; width: 0; background: var(--blue-600); transition: width .3s; }
+    .prompt { margin: 0 0 12px; font-weight: 800; color: var(--slate-800); text-align: center; }
 
-    .feedback { margin-top: 16px; padding: 16px; border-radius: var(--radius); color: #fff; }
+    .feedback { margin-top: 14px; padding: 14px 16px; border-radius: var(--radius); color: #fff; }
     .feedback.good { background: var(--green-700); }
     .feedback.info { background: var(--slate-800); }
     .feedback-head { display: flex; align-items: flex-start; gap: 12px; }
-    .feedback-icon { font-size: 1.6rem; line-height: 1; }
+    .feedback-icon { font-size: 1.5rem; line-height: 1; }
     .feedback-title { margin: 0; font-weight: 900; }
     .feedback-desc { margin: 4px 0 0; font-size: .95rem; }
-    .feedback .btn { margin-top: 14px; padding: 12px; color: var(--slate-900); background: #fff; }
+    .feedback .btn { margin-top: 12px; padding: 12px; color: var(--slate-900); background: #fff; }
+
+    /* Stage 1: swipe cards */
+    .deck { position: relative; height: 300px; margin: 0 auto; width: 100%; max-width: 340px; }
+    .pcard {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      padding: 14px;
+      background: #fff;
+      border: 2px solid var(--slate-200);
+      border-radius: 22px;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, .12);
+      touch-action: pan-y;
+      cursor: grab;
+      transition: transform .3s ease, opacity .3s ease;
+    }
+    .pcard.behind { transform: scale(.95) translateY(10px); opacity: .6; pointer-events: none; }
+    .pcard-where { font-size: .85rem; font-weight: 700; color: var(--slate-600); }
+    .pbox {
+      flex: 1;
+      margin-top: 8px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: 12px;
+      color: #fff;
+      background: var(--c, var(--blue-600));
+      border-radius: 14px;
+    }
+    .pbox-emoji { font-size: 2.6rem; line-height: 1; }
+    .pbox-name { margin-top: 6px; font-size: 1.25rem; font-weight: 900; line-height: 1.2; }
+    .pbox-claim {
+      margin-top: 8px;
+      padding: 6px 8px;
+      font-size: .9rem; font-weight: 800;
+      color: var(--rose-900);
+      background: #fff1f2;
+      border-radius: 8px;
+      transform: rotate(-1.5deg);
+    }
+    .pbox-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 10px; }
+    .reg {
+      padding: 4px 8px;
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: .95rem; font-weight: 800;
+      color: var(--slate-900);
+      background: #fff;
+      border-radius: 6px;
+    }
+    .reg.none { font-family: inherit; font-size: .85rem; color: var(--slate-600); }
+    .holo {
+      padding: 4px 8px;
+      font-size: .75rem; font-weight: 900;
+      color: var(--slate-900);
+      background: linear-gradient(120deg, #e0f2fe, #fbcfe8, #fde68a, #bbf7d0, #e0f2fe);
+      background-size: 300% 100%;
+      border: 1px solid rgba(255, 255, 255, .8);
+      border-radius: 6px;
+      animation: holo 3s linear infinite;
+    }
+    .holo.none { color: var(--slate-600); background: rgba(255, 255, 255, .7); animation: none; font-weight: 700; }
+    @keyframes holo { to { background-position: 300% 0; } }
+    .stamp {
+      position: absolute; top: 22px;
+      padding: 4px 12px;
+      font-size: 1.5rem; font-weight: 900; letter-spacing: .05em;
+      border: 4px solid; border-radius: 10px;
+      background: rgba(255, 255, 255, .9);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .stamp-yes { left: 18px; color: var(--green-600); transform: rotate(-12deg); }
+    .stamp-no { right: 18px; color: var(--rose-500); transform: rotate(12deg); }
+    .swipe-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+    .swipe-buttons .btn { padding: 14px; color: #fff; }
+    .btn-no { background: var(--rose-500); }
+    .btn-yes { background: var(--green-600); }
+    .swipe-hint { margin: 8px 0 0; text-align: center; font-size: .85rem; color: var(--slate-500); }
+
+    /* Stage 2: tap-to-match */
+    .rx-label {
+      margin: 0 auto 14px;
+      max-width: 340px;
+      padding: 12px 14px;
+      font-size: .9rem;
+      background: #fff;
+      border: 2px solid var(--slate-800);
+      border-radius: 6px;
+      box-shadow: 4px 4px 0 var(--slate-200);
+    }
+    .rx-head { margin-bottom: 6px; padding-bottom: 6px; text-align: center; font-weight: 900; border-bottom: 1px solid var(--slate-300); }
+    .rx-foot { margin-top: 6px; padding-top: 6px; text-align: center; font-size: .75rem; font-weight: 800; border-top: 1px solid var(--slate-300); }
+    .tray { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; min-height: 48px; margin-bottom: 14px; }
+    .chip {
+      padding: 10px 14px;
+      font-weight: 800;
+      color: var(--blue-800);
+      background: var(--blue-50);
+      border: 2px solid var(--blue-200);
+      border-radius: 999px;
+      transition: transform .15s, background-color .15s;
+    }
+    .chip.selected { color: #fff; background: var(--blue-700); border-color: var(--blue-700); transform: scale(1.06); }
+    .slots { display: grid; gap: 8px; }
+    .slot {
+      display: flex; align-items: center; gap: 10px;
+      width: 100%;
+      min-height: 54px;
+      padding: 10px 12px;
+      text-align: left;
+      background: #fff;
+      border: 2px dashed var(--slate-300);
+      border-radius: 14px;
+    }
+    .slot-num {
+      flex: none;
+      width: 34px; height: 34px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; color: #fff;
+      background: #7e22ce;
+      border-radius: 50%;
+    }
+    .slot-label { flex: 1; font-weight: 700; color: var(--slate-700); }
+    .slot-fill { font-weight: 900; color: var(--green-800); }
+    .slot.ready { border-color: var(--blue-600); background: var(--blue-50); }
+    .slot.done { border-style: solid; border-color: var(--green-500); background: var(--green-50); }
+    .slot.wrong { animation: shake .35s; border-color: var(--rose-500); background: var(--rose-50); }
+    @keyframes shake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+    /* Stage 3: house */
+    .house { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .room { padding: 10px; border-radius: 14px; border: 1px solid rgba(15, 23, 42, .08); }
+    .room-name { margin: 0 0 6px; font-size: .8rem; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; color: var(--slate-700); }
+    .room.wide { grid-column: 1 / -1; }
+    .spot {
+      position: relative;
+      display: flex; align-items: center; gap: 6px;
+      width: 100%;
+      margin-top: 6px;
+      padding: 8px;
+      font-size: .85rem; font-weight: 700; text-align: left;
+      color: var(--slate-800);
+      background: rgba(255, 255, 255, .85);
+      border: 1px solid rgba(15, 23, 42, .1);
+      border-radius: 10px;
+    }
+    .spot .fe { font-size: 1.2rem; }
+    .spot .med {
+      position: absolute; top: -8px; right: -6px;
+      font-size: 1.3rem;
+      animation: bob 1.6s ease-in-out infinite;
+    }
+    .spot.fixed .med { display: none; }
+    .spot.fixed { background: var(--green-50); border-color: var(--green-500); }
+    .spot.safe { background: var(--green-50); border: 2px solid var(--green-500); }
+    .spot.hint .med { animation: bob .4s ease-in-out infinite; font-size: 1.6rem; }
+    .spot.nope { animation: shake .3s; }
+    @keyframes bob { 50% { transform: translateY(-4px); } }
+    .toast {
+      position: fixed; left: 50%; bottom: 20px; z-index: 50;
+      width: calc(100% - 32px); max-width: 26rem;
+      padding: 12px 16px;
+      font-size: .95rem;
+      color: #fff;
+      background: var(--slate-900);
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
+      transform: translateX(-50%);
+    }
+    .toast.good { background: var(--green-700); }
+    .bin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .bin {
+      padding: 14px 10px;
+      font-weight: 800;
+      background: #fff;
+      border: 2px solid var(--slate-200);
+      border-radius: 14px;
+    }
+    .bin .be { display: block; font-size: 1.8rem; }
+    .bin.right { border-color: var(--green-500); background: var(--green-50); }
+    .bin.wrongpick { border-color: var(--rose-500); background: var(--rose-50); }
+    .item-card { margin-bottom: 14px; padding: 16px; text-align: center; background: var(--amber-50); border: 2px solid var(--amber-100); border-radius: 18px; }
+    .item-card .ie { font-size: 2.6rem; line-height: 1.1; }
+    .item-card .in { margin: 6px 0 2px; font-size: 1.1rem; font-weight: 900; }
+
+    /* Stage 4: rapid fire */
+    .timer { height: 14px; margin: 0 0 16px; overflow: hidden; background: var(--slate-200); border-radius: 999px; }
+    .timer > div { height: 100%; width: 100%; background: var(--green-500); }
+    .timer > div.low { background: var(--rose-500); }
+    .statement {
+      min-height: 150px;
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      font-size: 1.2rem; font-weight: 800; line-height: 1.4; text-align: center;
+      color: var(--slate-900);
+      background: var(--slate-50);
+      border: 2px solid var(--slate-200);
+      border-radius: 20px;
+    }
+    .mf-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+    .mf-buttons .btn { padding: 20px 10px; font-size: 1.15rem; color: #fff; }
+    .bonus { margin: 6px 0 0; text-align: center; font-weight: 900; color: var(--green-700); min-height: 1.5em; }
+
+    /* Stage result */
+    .stars { margin: 6px 0; font-size: 2.6rem; letter-spacing: .1em; }
+    .stars .off { filter: grayscale(1); opacity: .3; }
+    .stage-points { margin: 0 0 16px; font-size: 1.6rem; font-weight: 900; color: var(--green-600); }
 
     /* Claim */
     .trophy {
-      width: 64px; height: 64px; margin: 0 auto 8px;
+      width: 72px; height: 72px; margin: 0 auto 8px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 2rem;
-      background: var(--green-50);
-      border: 1px solid var(--green-100);
+      font-size: 2.4rem;
+      background: var(--amber-50);
+      border: 1px solid var(--amber-100);
       border-radius: 50%;
     }
-    .final-score { margin: 4px 0 16px; font-size: 1.8rem; font-weight: 900; color: var(--green-600); }
+    .final-score { margin: 4px 0 4px; font-size: 1.8rem; font-weight: 900; color: var(--green-600); }
+    .rank { margin: 0 0 16px; font-weight: 800; color: var(--amber-800); }
     .form { text-align: left; }
     .form > p { margin: 0 0 12px; font-weight: 800; color: var(--slate-700); }
     .field + .field { margin-top: 12px; }
@@ -257,9 +451,17 @@
     .voucher-status { margin: 0; font-size: .95rem; font-weight: 700; color: var(--green-800); }
     .voucher-status.warn { color: var(--amber-800); }
     .fineprint { margin: 10px 0 0; font-size: .85rem; color: var(--slate-600); }
+    .replay { margin-top: 12px; }
 
     .footer { padding-top: 20px; font-size: .85rem; text-align: center; color: var(--slate-600); }
     .footer a { color: var(--blue-700); font-weight: 700; }
+
+    #confetti { position: fixed; inset: 0; z-index: 60; pointer-events: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pulse, .holo, .spot .med { animation: none; }
+      * { transition: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -277,19 +479,20 @@
 
     <main>
 
-      <!-- ================= 1. START SCREEN ================= -->
+      <!-- ================= START ================= -->
       <section id="screen-start" class="screen center">
         <div class="icon-tile" aria-hidden="true">💊</div>
-        <div><span class="pill pulse">Masa Permainan: ~3-5 Minit</span></div>
-        <h2>Uji Pengetahuan Ubat Anda!</h2>
+        <div><span class="pill pulse">Masa Permainan: ~5 Minit</span></div>
+        <h2>Jadi Wira Ubat!</h2>
         <p class="lead">
-          Selesaikan 3 pusingan pantas mengenai pendaftaran ubat, konsep 5B, dan pelupusan selamat untuk menebus cenderahati di kaunter farmasi.
+          Tamatkan 4 cabaran seronok tentang ubat untuk menebus cenderahati di kaunter farmasi.
         </p>
 
         <ul class="panel round-list">
-          <li><b aria-hidden="true">✓</b><span>Pusingan 1: Detektif Ubat Sah (MAL &amp; Hologram FarmaTag™)</span></li>
-          <li><b aria-hidden="true">✓</b><span>Pusingan 2: Konsep 5B, Penyimpanan &amp; Pelupusan</span></li>
-          <li><b aria-hidden="true">✓</b><span>Pusingan 3: Kuiz Kilat: Mitos vs Fakta</span></li>
+          <li><span class="ico" aria-hidden="true">🕵️</span><span><b>Detektif Ubat Sah:</b> leret kad, sah atau tolak?</span></li>
+          <li><span class="ico" aria-hidden="true">✋</span><span><b>Cabaran 5B:</b> padankan label ubat</span></li>
+          <li><span class="ico" aria-hidden="true">🏠</span><span><b>Kemas Rumah Sihat:</b> cari ubat di tempat salah</span></li>
+          <li><span class="ico" aria-hidden="true">⚡</span><span><b>Kuiz Kilat:</b> mitos atau fakta dalam 10 saat</span></li>
         </ul>
 
         <div id="resume-box" class="resume" hidden>
@@ -297,45 +500,55 @@
           <button type="button" class="btn btn-light" onclick="showSavedVoucher()">Lihat Baucar Saya</button>
         </div>
 
-        <button type="button" class="btn btn-primary" onclick="startGame()">MULA CABARAN SEKARANG</button>
+        <button type="button" class="btn btn-primary" onclick="startGame()">MULA CABARAN</button>
       </section>
 
-      <!-- ================= 2. GAMEPLAY SCREEN ================= -->
-      <section id="screen-game" class="screen" hidden>
-        <div class="status-row">
-          <span id="round-indicator">Pusingan 1/3</span>
-          <span>Skor: <strong id="live-score">0</strong></span>
+      <!-- ================= STAGE INTRO ================= -->
+      <section id="screen-intro" class="screen center" hidden>
+        <span class="stage-badge" id="intro-step"></span>
+        <div class="icon-tile" id="intro-icon" aria-hidden="true"></div>
+        <h2 id="intro-title" tabindex="-1"></h2>
+        <p class="lead" id="intro-howto"></p>
+        <div class="panel tips">
+          <p class="tips-title">💡 Tip Meditips</p>
+          <ul id="intro-tips"></ul>
         </div>
-        <div class="progress" role="progressbar" aria-label="Kemajuan kuiz" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress">
-          <div id="progress-bar"></div>
-        </div>
-
-        <div class="panel">
-          <span id="question-tag" class="tag">Kategori</span>
-          <h3 id="question-text" class="question" tabindex="-1">Soalan</h3>
-          <p id="question-detail" class="detail"></p>
-        </div>
-
-        <div id="answers-container" class="answers"></div>
-
-        <div id="feedback-box" class="feedback" hidden aria-live="polite">
-          <div class="feedback-head">
-            <span id="feedback-icon" class="feedback-icon" aria-hidden="true"></span>
-            <div>
-              <p id="feedback-title" class="feedback-title"></p>
-              <p id="feedback-desc" class="feedback-desc"></p>
-            </div>
-          </div>
-          <button type="button" id="next-btn" class="btn" onclick="nextQuestion()">Teruskan &rarr;</button>
-        </div>
+        <button type="button" class="btn btn-primary" id="intro-start">Mula!</button>
       </section>
 
-      <!-- ================= 3. REGISTRATION & VOUCHER SCREEN ================= -->
+      <!-- ================= PLAY ================= -->
+      <section id="screen-play" class="screen" hidden>
+        <div class="hud">
+          <span id="hud-stage"></span>
+          <span class="hud-right">
+            <span>Skor: <strong id="hud-score">0</strong></span>
+            <button type="button" class="mute" id="mute-btn" onclick="toggleMute()" aria-label="Bunyi"></button>
+          </span>
+        </div>
+        <div class="progress" role="progressbar" aria-label="Kemajuan pusingan" aria-valuemin="0" aria-valuemax="100" id="hud-progress"><div id="hud-bar"></div></div>
+        <div id="stage-root"></div>
+      </section>
+
+      <!-- ================= STAGE RESULT ================= -->
+      <section id="screen-result" class="screen center" hidden>
+        <span class="stage-badge" id="result-step"></span>
+        <h2 id="result-title" tabindex="-1"></h2>
+        <div class="stars" id="result-stars" aria-hidden="true"></div>
+        <p class="stage-points" id="result-points"></p>
+        <div class="panel tips">
+          <p class="tips-title">📌 Ingat!</p>
+          <ul id="result-tips"></ul>
+        </div>
+        <button type="button" class="btn btn-primary" id="result-next"></button>
+      </section>
+
+      <!-- ================= CLAIM ================= -->
       <section id="screen-claim" class="screen center" hidden>
-        <div class="trophy" aria-hidden="true">🏆</div>
+        <div class="trophy" aria-hidden="true" id="claim-medal">🏆</div>
         <h2 id="claim-title" tabindex="-1">Tahniah, Wira Ubat!</h2>
-        <p class="lead" style="margin-bottom:4px">Anda telah melengkapkan cabaran Meditips Kenali Ubat Anda.</p>
+        <p class="lead" style="margin-bottom:4px">Anda telah melengkapkan Cabaran Wira Ubat MyCHAMPION.</p>
         <div class="final-score" id="final-score-display"></div>
+        <p class="rank" id="final-rank"></p>
 
         <form id="reg-form-box" class="panel form" novalidate onsubmit="submitRegistration(event)">
           <p>Daftar kehadiran untuk rekod &amp; tuntutan cenderahati:</p>
@@ -370,6 +583,8 @@
           </div>
         </div>
 
+        <button type="button" class="btn btn-light replay" onclick="startGame()">🔁 Main Sekali Lagi</button>
+
         <div class="footer">
           Pertanyaan ubat-ubatan: Pusat Panggilan Farmasi Kebangsaan <strong>1800-88-6722</strong><br />
           <a href="https://www.knowyourmedicine.gov.my" target="_blank" rel="noopener">www.knowyourmedicine.gov.my</a>
@@ -381,11 +596,14 @@
     </main>
   </div>
 
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <canvas id="confetti" hidden></canvas>
+
   <script>
     // -------------------------------------------------------------
     // CONFIGURATION
     // -------------------------------------------------------------
-    // Paste your deployed Google Apps Script web app URL (ends in /exec).
+    // Your deployed Google Apps Script web app URL (ends in /exec).
     const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw6GCczeta-Ojmns3aFMOeMBCYhVmXhSj9pUfjKHU-KARcFPH7WfZc8ynLgb2-A3foJVQ/exec";
 
     // true  = each phone gets one voucher (players use their own phones).
@@ -393,112 +611,200 @@
     // The Google Sheet also blocks a second voucher for the same phone number / e-mail either way.
     const ONE_VOUCHER_PER_DEVICE = true;
 
-    const POINTS_PER_QUESTION = 150;
     const REQUEST_TIMEOUT_MS = 12000;
     const STORAGE_PREFIX = "wiraUbat2026.";
+    const RAPID_SECONDS = 10;
 
     // -------------------------------------------------------------
-    // QUESTIONS: aligned with Buku Meditips Farmasi KKM (Edisi 2025)
-    // The page number in each comment is the source page in that book.
-    // Options are shuffled at runtime, so their order here doesn't matter.
+    // GAME CONTENT: from Buku Meditips Farmasi KKM (Edisi 2025).
+    // Page numbers in comments point to the source page in that book.
     // -------------------------------------------------------------
-    const gameQuestions = [
-      // Pusingan 1: Detektif Ubat Sah
-      { // ms. 4-5
-        round: 1,
-        tag: "Pendaftaran Ubat",
-        question: "Produk ubat batuk menunjukkan nombor MAL12345678X dan label keselamatan hologram FarmaTag™.",
-        detail: "Adakah produk ini sah dan berdaftar dengan Kementerian Kesihatan Malaysia (KKM)?",
-        options: [
-          { text: "✅ Sah & berdaftar", correct: true, exp: "Betul! Ubat berdaftar mempunyai nombor pendaftaran MAL (MAL + 8 digit + huruf) dan label keselamatan hologram FarmaTag™. Huruf 'X' bermaksud ubat am (OTC)." },
-          { text: "❌ Tidak sah / palsu", correct: false, exp: "Kurang tepat. MAL + 8 digit + huruf 'X' ialah ubat am (OTC) yang berdaftar. Semak status di laman web NPRA atau ketulenan hologram dengan aplikasi FarmaChecker™." }
-        ]
-      },
-      { // ms. 18-19
-        round: 1,
-        tag: "Iklan & Pembelian Ubat",
-        question: "Suplemen herba di media sosial mendakwa '100% Mujarab Pulihkan Kencing Manis Dalam 3 Hari Tanpa Suntikan'.",
-        detail: "Apakah tindakan anda terhadap produk tersebut?",
-        options: [
-          { text: "Jangan beli, ia tuntutan melampau", correct: true, exp: "Tepat! Jangan terpedaya dengan tuntutan melampau seperti 'Mujarab' atau 'Terbaik'. Iklan ubat yang sah memaparkan nombor kelulusan Lembaga Iklan Ubat, cth: KKLIU 9876/EXP 31.12.2025." },
-          { text: "Beli kerana ia produk semula jadi", correct: false, exp: "Berhati-hati! Produk dengan tuntutan perubatan yang tidak munasabah disyaki dicampurkan dengan bahan terlarang. Jangan beli ubat daripada penjual yang diragui, termasuk di media sosial." }
-        ]
-      },
-      { // ms. 20, 4
-        round: 1,
-        tag: "Semakan Kosmetik",
-        question: "Krim muka mempunyai nombor bermula dengan 'NOT210901234K'.",
-        detail: "Apakah status produk ini menurut garis panduan KKM?",
-        options: [
-          { text: "Kosmetik bernotifikasi", correct: true, exp: "Tepat! Kosmetik yang sah mempunyai nombor notifikasi bermula 'NOT' (cth: NOT141203021K). Semak status notifikasi di laman web NPRA (npra.gov.my) sebelum membeli." },
-          { text: "Ubat terkawal (perlu preskripsi)", correct: false, exp: "Kurang tepat. 'NOT' ialah nombor notifikasi kosmetik. Ubat terkawal pula berdaftar dengan nombor MAL yang berakhir dengan huruf 'A'." }
-        ]
-      },
 
-      // Pusingan 2: Konsep 5B, Penyimpanan & Pelupusan
-      { // ms. 6, 8
-        round: 2,
-        tag: "Konsep 5B: Masa yang Betul",
-        question: "Label ubat menyatakan arahan: 'Ambil 3 kali sehari'. Bagaimanakah cara pengambilan yang betul?",
-        detail: "Pilih selang masa yang tepat.",
-        options: [
-          { text: "Setiap 8 jam (cth: 6 pagi, 2 petang, 10 malam)", correct: true, exp: "Tepat! Dos tiga kali sehari bermaksud setiap 8 jam. Ini panduan am. Untuk maklumat lanjut, dapatkan nasihat doktor atau ahli farmasi." },
-          { text: "Bila-bila masa, asalkan cukup 3 kali sehari", correct: false, exp: "Kurang tepat. Ambil ubat mengikut kekerapan pada label: dos tiga kali sehari = setiap 8 jam." }
-        ]
-      },
-      { // ms. 14-15
-        round: 2,
-        tag: "Penyimpanan Selamat",
-        question: "Di manakah tempat paling selamat untuk menyimpan ubat di rumah?",
-        detail: "Berdasarkan Panduan Penyimpanan Ubat di Rumah.",
-        options: [
-          { text: "Di dalam kabinet bahagian atas, jauh dari kanak-kanak", correct: true, exp: "Tepat! Simpan ubat dalam bekas asal pada suhu bilik (30°C ke bawah), jauh daripada cahaya matahari, haba, kelembapan dan kanak-kanak." },
-          { text: "Di dalam bilik mandi atau di dalam kereta", correct: false, exp: "Kurang tepat. Jauhkan ubat daripada kelembapan (bilik mandi) dan haba (di dalam kereta untuk jangka masa lama, tepi dapur memasak)." },
-          { text: "Di atas meja makan supaya tidak lupa", correct: false, exp: "Kurang tepat. Meja makan ialah tempat yang mudah dicapai kanak-kanak. Simpan ubat di dalam kabinet bahagian atas." }
-        ]
-      },
-      { // ms. 16-17
-        round: 2,
-        tag: "Pelupusan Ubat",
-        question: "Apakah cara terbaik untuk melupuskan ubat yang telah rosak atau tamat tempoh?",
-        detail: "Demi keselamatan keluarga dan alam sekitar.",
-        options: [
-          { text: "Bawa ke pusat pengumpulan ubat MyMediSAFE", correct: true, exp: "Cemerlang! Cari pusat pengumpulan berhampiran di www.mymedisafe.org.my. Ingat 5 langkah: Semak, Hapus, Bungkus, Lupus, Imbas." },
-          { text: "Buang ke tong sampah bersama sisa domestik", correct: false, exp: "Jangan! Pelupusan yang salah meninggalkan sisa ubat dalam sumber air seperti sungai dan tasik, yang dirawat untuk dijadikan air minuman." },
-          { text: "Tuang ke dalam sinki atau tandas", correct: false, exp: "Jangan! Pelupusan yang salah meninggalkan sisa ubat dalam sumber air seperti sungai dan tasik, yang dirawat untuk dijadikan air minuman." }
-        ]
-      },
+    // Stage 1 (ms. 4-5, 18-19): swipe right = Sah, left = Tolak.
+    const SWIPE_CARDS = [
+      { name: "Sirap Batuk", emoji: "🧴", color: "#0284c7", reg: "MAL19876543X", holo: true, where: "Farmasi komuniti", legit: true,
+        exp: "Sah! MAL + 8 digit + huruf X = ubat am (OTC), dengan hologram FarmaTag™." },
+      { name: "Ubat Darah Tinggi", emoji: "💊", color: "#4f46e5", reg: "MAL20123456A", holo: true, where: "Klinik kesihatan", legit: true,
+        exp: "Sah! Huruf A = ubat terkawal, diperoleh dengan preskripsi doktor." },
+      { name: "Suplemen Vitamin C", emoji: "🍊", color: "#d97706", reg: "MAL21034567N", holo: true, where: "Farmasi komuniti", legit: true,
+        exp: "Sah! Huruf N = suplemen kesihatan." },
+      { name: "Ubat Tradisional Herba", emoji: "🌿", color: "#15803d", reg: "MAL19987654T", holo: true, where: "Farmasi komuniti", legit: true,
+        exp: "Sah! Huruf T = produk semula jadi (ubat tradisional dan homeopati)." },
+      { name: "Kopi Kuat Pracampur", emoji: "☕", color: "#78350f", reg: null, holo: false, where: "Pasar malam", claim: "Tenaga luar biasa! Harga murah!", legit: false,
+        exp: "Tolak! Tiada nombor MAL. Kopi pracampur berharga tidak munasabah disyaki dicampur bahan terlarang." },
+      { name: "Pil Kurus Ajaib", emoji: "⚖️", color: "#be185d", reg: null, holo: false, where: "Iklan media sosial", claim: "Turun 10kg seminggu! Dijamin selamat!", legit: false,
+        exp: "Tolak! Tuntutan melampau seperti 'Dijamin Selamat'. Iklan ubat yang sah memaparkan nombor KKLIU." },
+      { name: "Ubat Gastrik", emoji: "💊", color: "#0f766e", reg: "MAL1234X", holo: true, where: "Penjual dalam talian", legit: false,
+        exp: "Tolak! Nombor pendaftaran mesti MAL + 8 digit + huruf. 'MAL1234X' hanya ada 4 digit." },
+      { name: "Ubat Selesema", emoji: "🤧", color: "#7c3aed", reg: "MAL20234567X", holo: false, where: "Kedai runcit", legit: false,
+        exp: "Tolak! Semua ubat perlu mempunyai label keselamatan hologram FarmaTag™ yang tulen." }
+    ];
 
-      // Pusingan 3: Kuiz Kilat (Mitos vs Fakta)
-      { // ms. 22
-        round: 3,
-        tag: "Antibiotik",
-        question: "Mitos atau Fakta: 'Demam, batuk dan selesema biasa perlu dirawat dengan antibiotik.'",
-        detail: "Pilih pendirian anda.",
-        options: [
-          { text: "Mitos", correct: true, exp: "Betul, ia mitos! Antibiotik hanya untuk jangkitan bakteria. Ia tidak perlu diambil jika demam, batuk, selesema atau sakit tekak disebabkan oleh virus." },
-          { text: "Fakta", correct: false, exp: "Kurang tepat, ia mitos. Penggunaan antibiotik secara tidak wajar boleh menyebabkan kerintangan antibiotik, yang boleh mengakibatkan kegagalan rawatan." }
+    // Stage 2 (ms. 6-8): tap a chip, then tap where it belongs.
+    const MATCH_ROUNDS = [
+      {
+        title: "Padankan maklumat label dengan Konsep 5B",
+        showLabel: true,
+        slots: [
+          { num: "1", label: "Pengguna yang betul", answer: "Ali bin Abu" },
+          { num: "2", label: "Ubat yang betul", answer: "Mefenamic Acid 250mg" },
+          { num: "3", label: "Dos yang betul", answer: "2 biji" },
+          { num: "4", label: "Cara pengambilan yang betul", answer: "Selepas makan" },
+          { num: "5", label: "Masa yang betul", answer: "3 kali sehari" }
         ]
       },
-      { // ms. 21
-        round: 3,
-        tag: "Perubatan Estetik",
-        question: "Mitos atau Fakta: 'Suntikan botox/filler selamat dilakukan di mana-mana salun kecantikan.'",
-        detail: "Pilih pendirian anda.",
-        options: [
-          { text: "Mitos", correct: true, exp: "Betul, ia mitos! Suntikan botox/filler ialah prosedur invasif. Pastikan 3P: Prosedur, Pengamal Perubatan (doktor berdaftar MPM dengan LCP daripada KKM) dan Premis kesihatan berdaftar (klinik/hospital)." },
-          { text: "Fakta", correct: false, exp: "Kurang tepat, ia mitos. Hanya doktor yang berkelayakan dibenarkan menjalankan prosedur invasif, di klinik atau hospital berdaftar. Pastikan 3P untuk mengelakkan kesan mudarat." }
+      {
+        title: "Padankan kekerapan dengan jadual masa",
+        showLabel: false,
+        slots: [
+          { num: "1×", label: "🕗 8 pagi", answer: "Sekali sehari" },
+          { num: "2×", label: "🕗 8 pagi • 🕗 8 malam", answer: "2 kali sehari" },
+          { num: "3×", label: "6 pagi • 2 petang • 10 malam", answer: "3 kali sehari" },
+          { num: "4×", label: "6 pagi • 12 tgh • 6 petang • 12 malam", answer: "4 kali sehari" }
         ]
       }
     ];
 
+    // Stage 3 (ms. 14-17): find medicines stored in the wrong place.
+    const ROOMS = [
+      { name: "Bilik Mandi", bg: "#e0f2fe", spots: [
+        { fe: "🪞", label: "Kabinet bilik mandi", med: "Kelembapan bilik mandi merosakkan ubat." },
+        { fe: "🛁", label: "Tab mandi" }
+      ] },
+      { name: "Dapur", bg: "#fef3c7", spots: [
+        { fe: "🔥", label: "Kabinet tepi dapur", med: "Haba dapur memasak merosakkan ubat." },
+        { fe: "🧊", label: "Atas peti sejuk", med: "Bahagian atas peti sejuk panas. Jauhkan ubat daripada haba." },
+        { fe: "🚰", label: "Sinki" }
+      ] },
+      { name: "Ruang Tamu & Makan", bg: "#fce7f3", spots: [
+        { fe: "🍽️", label: "Atas meja makan", med: "Meja makan mudah dicapai kanak-kanak." },
+        { fe: "🪟", label: "Tepi tingkap", med: "Cahaya matahari merosakkan ubat." },
+        { fe: "🛋️", label: "Sofa" }
+      ] },
+      { name: "Bilik Tidur", bg: "#ede9fe", spots: [
+        { fe: "📚", label: "Rak terbuka yang rendah", med: "Rak rendah mudah dicapai kanak-kanak." },
+        { fe: "🛏️", label: "Katil" },
+        { fe: "🗄️", label: "Kabinet bahagian atas", safe: true }
+      ] },
+      { name: "Kereta", bg: "#dcfce7", wide: true, spots: [
+        { fe: "🚗", label: "Di dalam kereta", med: "Kereta sangat panas. Jangan tinggalkan ubat di dalam kereta untuk jangka masa lama." }
+      ] }
+    ];
+
+    // Stage 3b (ms. 10, 14, 16-17): sort each item into the right place.
+    const THIS_YEAR = new Date().getFullYear();
+    const SORT_ITEMS = [
+      { emoji: "🧴", name: "Sirap Batuk", detail: `Tarikh luput: MAC ${THIS_YEAR - 1}`, answer: "medisafe",
+        exp: "Ubat yang melepasi tarikh luput dibawa ke pusat pengumpulan MyMediSAFE." },
+      { emoji: "💊", name: "Tablet Tahan Sakit", detail: "Warna berubah & berbau pelik", answer: "medisafe",
+        exp: "Ubat yang rosak (warna, bau atau rasa berubah) tidak boleh diambil. Lupuskan di MyMediSAFE." },
+      { emoji: "💊", name: "Ubat Darah Tinggi", detail: `Dalam bekas asal • Luput: DIS ${THIS_YEAR + 1}`, answer: "keep",
+        exp: "Masih elok dan berlabel lengkap. Simpan dalam bekas asal di kabinet bahagian atas." }
+    ];
+    const BINS = [
+      { id: "keep", emoji: "🗄️", label: "Simpan di kabinet atas" },
+      { id: "medisafe", emoji: "♻️", label: "Pusat MyMediSAFE" },
+      { id: "trash", emoji: "🗑️", label: "Tong sampah" },
+      { id: "sink", emoji: "🚰", label: "Sinki / tandas" }
+    ];
+
+    // Stage 4 (ms. 10-11, 20-22): answer within 10 seconds.
+    const RAPID = [
+      { text: "Antibiotik boleh merawat selesema yang disebabkan oleh virus.", fact: false,
+        exp: "Mitos! Antibiotik hanya untuk jangkitan bakteria." },
+      { text: "Habiskan antibiotik seperti yang diarahkan walaupun sudah berasa sihat.", fact: true,
+        exp: "Fakta! Ambil antibiotik seperti diarahkan oleh doktor atau ahli farmasi." },
+      { text: "Antibiotik ialah ubat untuk menguatkan imuniti badan.", fact: false,
+        exp: "Mitos! Antibiotik bukan ubat untuk menguatkan imuniti badan." },
+      { text: "Kosmetik yang sah mempunyai nombor notifikasi bermula 'NOT'.", fact: true,
+        exp: "Fakta! Semak status notifikasi di laman web NPRA (npra.gov.my)." },
+      { text: "Krim kosmetik boleh merawat atau mencegah penyakit kulit.", fact: false,
+        exp: "Mitos! Kosmetik hanya untuk tujuan kosmetik, bukan merawat atau mencegah penyakit." },
+      { text: "Suntikan botox/filler boleh dibuat di salun kecantikan.", fact: false,
+        exp: "Mitos! Prosedur invasif hanya oleh doktor berdaftar dengan LCP, di klinik/hospital berdaftar." },
+      { text: "Jika terlupa satu dos, gandakan dos seterusnya.", fact: false,
+        exp: "Mitos! Jangan gandakan dos. Ambil sebaik teringat, atau abaikan jika hampir masa dos seterusnya." },
+      { text: "Jangan kongsi ubat dengan orang lain walaupun gejalanya sama.", fact: true,
+        exp: "Fakta! Ubat anda ditetapkan untuk anda sahaja." }
+    ];
+
+    const STAGES = [
+      {
+        title: "Detektif Ubat Sah", icon: "🕵️",
+        howto: "Leret kad ke KANAN jika produk SAH, ke KIRI untuk TOLAK. Boleh juga tekan butang.",
+        tips: [
+          "Nombor pendaftaran: MAL + 8 digit + huruf A, B, X, T atau N.",
+          "Semua ubat perlu ada label keselamatan hologram FarmaTag™.",
+          "Jangan terpedaya dengan tuntutan 'Mujarab', 'Dijamin Selamat'."
+        ],
+        recap: [
+          "Semak status di npra.gov.my atau aplikasi NPRA Product Status.",
+          "Sahkan hologram dengan aplikasi FarmaChecker™.",
+          "Jangan beli ubat terkawal secara dalam talian."
+        ],
+        max: SWIPE_CARDS.length * 100,
+        run: runSwipeStage
+      },
+      {
+        title: "Cabaran 5B", icon: "✋",
+        howto: "Tekan satu kad, kemudian tekan tempat yang betul untuknya.",
+        tips: [
+          "5B: Pengguna, Ubat, Dos, Cara pengambilan dan Masa yang betul.",
+          "Maklumat 5B boleh didapati pada label ubat.",
+          "3 kali sehari = setiap 8 jam."
+        ],
+        recap: [
+          "Amalkan Konsep 5B setiap kali mengambil ubat.",
+          "Ambil ubat mengikut kekerapan pada label.",
+          "Jika tidak faham, tanya ahli farmasi."
+        ],
+        max: MATCH_ROUNDS.reduce((n, r) => n + r.slots.length, 0) * 50,
+        run: runMatchStage
+      },
+      {
+        title: "Kemas Rumah Sihat", icon: "🏠",
+        howto: "Cari ubat 💊 yang disimpan di tempat salah dan tekan untuk alihkannya. Kemudian, asingkan ubat lama.",
+        tips: [
+          "Simpan ubat di kabinet bahagian atas, jauh dari kanak-kanak.",
+          "Jauhkan ubat daripada cahaya matahari, haba dan kelembapan.",
+          "Jangan buang ubat ke tong sampah, sinki atau tandas."
+        ],
+        recap: [
+          "Suhu bilik: simpan ubat pada 30°C ke bawah.",
+          "5 langkah pelupusan: Semak, Hapus, Bungkus, Lupus, Imbas.",
+          "Cari pusat pengumpulan di www.mymedisafe.org.my."
+        ],
+        max: ROOMS.reduce((n, r) => n + r.spots.filter((s) => s.med).length, 0) * 50 + SORT_ITEMS.length * 50,
+        run: runHouseStage
+      },
+      {
+        title: "Kuiz Kilat", icon: "⚡",
+        howto: `Mitos atau fakta? Jawab dalam ${RAPID_SECONDS} saat. Lebih cepat, lebih banyak mata!`,
+        tips: [
+          "Antibiotik hanya untuk jangkitan bakteria.",
+          "Kosmetik hanya untuk kegunaan luar, bukan merawat penyakit.",
+          "Pastikan 3P sebelum rawatan estetik: Prosedur, Pengamal, Premis."
+        ],
+        recap: [
+          "Penggunaan antibiotik tidak wajar menyebabkan kerintangan antibiotik.",
+          "Jangan gandakan dos jika terlupa.",
+          "Pertanyaan ubat: hubungi 1800-88-6722."
+        ],
+        max: RAPID.length * 100,
+        run: runRapidStage
+      }
+    ];
+
     // -------------------------------------------------------------
-    // STATE
+    // STATE & HELPERS
     // -------------------------------------------------------------
-    let currentQuestionIndex = 0;
-    let score = 0;
+    let stageIndex = 0;
+    let stageScores = [];
+    let stagePoints = 0;
+    let rapidTimer = null;
     const $ = (id) => document.getElementById(id);
-    const maxScore = () => gameQuestions.length * POINTS_PER_QUESTION;
+    const totalScore = () => stageScores.reduce((a, b) => a + b, 0);
+    const maxScore = () => STAGES.reduce((n, s) => n + s.max, 0);
     const isBackendConfigured = () => /^https:\/\/script\.google\.com\//.test(GOOGLE_APPS_SCRIPT_URL);
 
     // localStorage can throw (private mode, blocked storage), so every access is guarded.
@@ -511,14 +817,19 @@
       }
     };
 
-    // Short vibration on Android; iOS doesn't support it and silently skips.
-    function triggerHaptic(type = "light") {
-      if ("vibrate" in navigator) navigator.vibrate(type === "light" ? 40 : [80, 50, 80]);
-    }
-
-    function showScreen(id) {
-      ["screen-start", "screen-game", "screen-claim"].forEach((s) => { $(s).hidden = s !== id; });
-      window.scrollTo(0, 0);
+    // Small DOM builder: el("div", { class: "x", onclick: fn }, [children or text]).
+    function el(tag, attrs = {}, children = []) {
+      const node = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs)) {
+        if (k.startsWith("on")) node.addEventListener(k.slice(2), v);
+        else if (k === "text") node.textContent = v;
+        else if (k === "style") node.style.cssText = v;
+        else node.setAttribute(k, v);
+      }
+      (Array.isArray(children) ? children : [children]).forEach((c) => {
+        if (c != null) node.append(c instanceof Node ? c : document.createTextNode(c));
+      });
+      return node;
     }
 
     function shuffle(list) {
@@ -530,109 +841,555 @@
       return a;
     }
 
+    function showScreen(id) {
+      ["screen-start", "screen-intro", "screen-play", "screen-result", "screen-claim"].forEach((s) => { $(s).hidden = s !== id; });
+      window.scrollTo(0, 0);
+    }
+
+    // Short vibration on Android; iOS doesn't support it and silently skips.
+    function haptic(pattern) {
+      try { if ("vibrate" in navigator) navigator.vibrate(pattern); } catch (e) { /* ignore */ }
+    }
+
+    // --- Sound effects (Web Audio, no files to download) ---
+    let audioCtx = null;
+    let muted = store.get("muted") === true;
+    function tone(freqs, step = 0.09, type = "sine", volume = 0.15) {
+      if (muted) return;
+      try {
+        audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+        const now = audioCtx.currentTime;
+        freqs.forEach((f, i) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = type;
+          osc.frequency.value = f;
+          gain.gain.setValueAtTime(volume, now + i * step);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * step + step * 1.8);
+          osc.connect(gain).connect(audioCtx.destination);
+          osc.start(now + i * step);
+          osc.stop(now + i * step + step * 2);
+        });
+      } catch (e) { /* audio unavailable */ }
+    }
+    const sfx = {
+      good() { tone([660, 880]); haptic(30); },
+      bad() { tone([240, 180], 0.12, "triangle", 0.2); haptic([60, 40, 60]); },
+      tap() { tone([520], 0.05, "sine", 0.08); },
+      win() { tone([523, 659, 784, 1047], 0.11); }
+    };
+    function toggleMute() {
+      muted = !muted;
+      store.set("muted", muted);
+      updateMuteButton();
+    }
+    function updateMuteButton() {
+      $("mute-btn").textContent = muted ? "🔇" : "🔊";
+      $("mute-btn").setAttribute("aria-label", muted ? "Hidupkan bunyi" : "Matikan bunyi");
+    }
+
+    let toastTimer = null;
+    function toast(text, good = false, ms = 2600) {
+      const t = $("toast");
+      t.textContent = text;
+      t.className = "toast" + (good ? " good" : "");
+      t.hidden = false;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { t.hidden = true; }, ms);
+    }
+
+    function setProgress(done, total) {
+      const pct = Math.round((done / total) * 100);
+      $("hud-bar").style.width = pct + "%";
+      $("hud-progress").setAttribute("aria-valuenow", String(pct));
+    }
+
+    function addPoints(n) {
+      stagePoints += n;
+      $("hud-score").textContent = totalScore() + stagePoints;
+    }
+
+    function feedbackBox(good, title, desc, buttonText, onNext) {
+      const btn = el("button", { type: "button", class: "btn", onclick: onNext }, buttonText);
+      const box = el("div", { class: "feedback " + (good ? "good" : "info"), "aria-live": "polite" }, [
+        el("div", { class: "feedback-head" }, [
+          el("span", { class: "feedback-icon", "aria-hidden": "true" }, good ? "🎉" : "💡"),
+          el("div", {}, [el("p", { class: "feedback-title" }, title), el("p", { class: "feedback-desc" }, desc)])
+        ]),
+        btn
+      ]);
+      setTimeout(() => { box.scrollIntoView({ behavior: "smooth", block: "nearest" }); btn.focus({ preventScroll: true }); }, 50);
+      return box;
+    }
+
     // -------------------------------------------------------------
-    // GAME
+    // FLOW
     // -------------------------------------------------------------
     function startGame() {
-      triggerHaptic("light");
-      currentQuestionIndex = 0;
-      score = 0;
-      showScreen("screen-game");
-      loadQuestion();
+      sfx.tap();
+      stageIndex = 0;
+      stageScores = [];
+      showIntro();
     }
 
-    function setProgress(answeredCount) {
-      const percent = Math.round((answeredCount / gameQuestions.length) * 100);
-      $("progress-bar").style.width = percent + "%";
-      $("progress").setAttribute("aria-valuenow", String(percent));
+    function showIntro() {
+      const s = STAGES[stageIndex];
+      $("intro-step").textContent = `Pusingan ${stageIndex + 1} / ${STAGES.length}`;
+      $("intro-icon").textContent = s.icon;
+      $("intro-title").textContent = s.title;
+      $("intro-howto").textContent = s.howto;
+      $("intro-tips").replaceChildren(...s.tips.map((t) => el("li", {}, t)));
+      $("intro-start").onclick = beginStage;
+      showScreen("screen-intro");
+      $("intro-title").focus({ preventScroll: true });
     }
 
-    function loadQuestion() {
-      const q = gameQuestions[currentQuestionIndex];
-
-      $("round-indicator").textContent = `Pusingan ${q.round}/3 • Soalan ${currentQuestionIndex + 1}/${gameQuestions.length}`;
-      $("live-score").textContent = score;
-      setProgress(currentQuestionIndex);
-
-      $("question-tag").textContent = q.tag;
-      $("question-text").textContent = q.question;
-      $("question-detail").textContent = q.detail;
-
-      const container = $("answers-container");
-      container.innerHTML = "";
-      shuffle(q.options).forEach((opt) => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "answer";
-        btn.dataset.correct = opt.correct ? "1" : "0";
-
-        const label = document.createElement("span");
-        label.textContent = opt.text;
-        const mark = document.createElement("span");
-        mark.className = "mark";
-        mark.setAttribute("aria-hidden", "true");
-        mark.textContent = "›";
-
-        btn.append(label, mark);
-        btn.addEventListener("click", () => handleAnswer(opt, btn));
-        container.appendChild(btn);
-      });
-
-      $("feedback-box").hidden = true;
-      $("question-text").focus({ preventScroll: true });
+    function beginStage() {
+      sfx.tap();
+      const s = STAGES[stageIndex];
+      stagePoints = 0;
+      $("hud-stage").textContent = `${stageIndex + 1}/${STAGES.length} • ${s.title}`;
+      $("hud-score").textContent = totalScore();
+      setProgress(0, 1);
+      $("stage-root").replaceChildren();
+      showScreen("screen-play");
+      s.run($("stage-root"));
     }
 
-    function handleAnswer(selectedOpt, btnElement) {
-      triggerHaptic(selectedOpt.correct ? "light" : "heavy");
+    function finishStage() {
+      clearInterval(rapidTimer);
+      const s = STAGES[stageIndex];
+      stageScores[stageIndex] = stagePoints;
+      const ratio = stagePoints / s.max;
+      const stars = ratio >= 0.85 ? 3 : ratio >= 0.5 ? 2 : 1;
+      sfx.win();
 
-      // Lock the answers and always reveal the right one, so a wrong pick still teaches.
-      document.querySelectorAll("#answers-container .answer").forEach((b) => {
-        b.disabled = true;
-        if (b.dataset.correct === "1") {
-          b.classList.add("is-correct");
-          b.querySelector(".mark").textContent = "✓";
-        } else if (b !== btnElement) {
-          b.classList.add("is-dim");
+      $("result-step").textContent = `Pusingan ${stageIndex + 1} / ${STAGES.length} selesai`;
+      $("result-title").textContent = ["Cuba lagi lain kali!", "Bagus!", "Cemerlang!"][stars - 1] + " " + s.title;
+      $("result-stars").replaceChildren(...[1, 2, 3].map((n) => el("span", { class: n <= stars ? "" : "off" }, "⭐")));
+      $("result-points").textContent = `+${stagePoints} / ${s.max} mata`;
+      $("result-tips").replaceChildren(...s.recap.map((t) => el("li", {}, t)));
+      const last = stageIndex === STAGES.length - 1;
+      $("result-next").textContent = last ? "Lihat Keputusan Akhir 🏆" : "Pusingan Seterusnya →";
+      $("result-next").onclick = () => {
+        sfx.tap();
+        if (last) showClaimScreen();
+        else { stageIndex++; showIntro(); }
+      };
+      showScreen("screen-result");
+      if (stars === 3) confetti(1200);
+      $("result-title").focus({ preventScroll: true });
+    }
+
+    // -------------------------------------------------------------
+    // STAGE 1: SWIPE CARDS
+    // -------------------------------------------------------------
+    function runSwipeStage(root) {
+      const cards = shuffle(SWIPE_CARDS);
+      let i = 0;
+
+      const deck = el("div", { class: "deck" });
+      const noBtn = el("button", { type: "button", class: "btn btn-no" }, "✗ TOLAK");
+      const yesBtn = el("button", { type: "button", class: "btn btn-yes" }, "✓ SAH");
+      const controls = el("div", { class: "swipe-buttons" }, [noBtn, yesBtn]);
+      const hint = el("p", { class: "swipe-hint" }, "← Leret kiri: Tolak  •  Leret kanan: Sah →");
+      const fbSlot = el("div");
+      root.append(el("p", { class: "prompt" }, "Produk ini sah atau perlu ditolak?"), deck, controls, hint, fbSlot);
+
+      function buildCard(c) {
+        const card = el("div", { class: "pcard", style: `--c:${c.color}` }, [
+          el("div", { class: "pcard-where" }, "📍 " + c.where),
+          el("div", { class: "pbox" }, [
+            el("div", {}, [
+              el("div", { class: "pbox-emoji", "aria-hidden": "true" }, c.emoji),
+              el("div", { class: "pbox-name" }, c.name),
+              c.claim ? el("div", { class: "pbox-claim" }, c.claim) : null
+            ]),
+            el("div", { class: "pbox-row" }, [
+              c.reg ? el("span", { class: "reg" }, c.reg) : el("span", { class: "reg none" }, "Tiada nombor pendaftaran"),
+              c.holo ? el("span", { class: "holo" }, "✦ FarmaTag™") : el("span", { class: "holo none" }, "Tiada hologram")
+            ])
+          ]),
+          el("div", { class: "stamp stamp-yes", "aria-hidden": "true" }, "SAH"),
+          el("div", { class: "stamp stamp-no", "aria-hidden": "true" }, "TOLAK")
+        ]);
+        return card;
+      }
+
+      function render() {
+        deck.replaceChildren();
+        fbSlot.replaceChildren();
+        setProgress(i, cards.length);
+        if (cards[i + 1]) deck.append(Object.assign(buildCard(cards[i + 1]), { className: "pcard behind" }));
+        const card = buildCard(cards[i]);
+        deck.append(card);
+        enableDrag(card);
+        noBtn.disabled = yesBtn.disabled = false;
+      }
+
+      let locked = false;
+      function enableDrag(card) {
+        let startX = 0, dx = 0, dragging = false;
+        const yes = card.querySelector(".stamp-yes"), no = card.querySelector(".stamp-no");
+        card.addEventListener("pointerdown", (e) => {
+          if (locked) return;
+          dragging = true; startX = e.clientX; dx = 0;
+          card.setPointerCapture(e.pointerId);
+          card.style.transition = "none";
+        });
+        card.addEventListener("pointermove", (e) => {
+          if (!dragging) return;
+          dx = e.clientX - startX;
+          card.style.transform = `translateX(${dx}px) rotate(${dx / 18}deg)`;
+          yes.style.opacity = Math.max(0, Math.min(1, dx / 90));
+          no.style.opacity = Math.max(0, Math.min(1, -dx / 90));
+        });
+        const end = () => {
+          if (!dragging) return;
+          dragging = false;
+          card.style.transition = "";
+          if (Math.abs(dx) > 90) decide(dx > 0);
+          else { card.style.transform = ""; yes.style.opacity = no.style.opacity = 0; }
+        };
+        card.addEventListener("pointerup", end);
+        card.addEventListener("pointercancel", end);
+      }
+
+      function decide(saidSah) {
+        if (locked) return;
+        locked = true;
+        noBtn.disabled = yesBtn.disabled = true;
+        const c = cards[i];
+        const card = deck.lastElementChild;
+        card.querySelector(saidSah ? ".stamp-yes" : ".stamp-no").style.opacity = 1;
+        card.style.transform = `translateX(${saidSah ? 130 : -130}%) rotate(${saidSah ? 20 : -20}deg)`;
+        card.style.opacity = "0";
+
+        const correct = saidSah === c.legit;
+        if (correct) { addPoints(100); sfx.good(); } else { sfx.bad(); }
+        setProgress(i + 1, cards.length);
+        const last = i === cards.length - 1;
+        fbSlot.replaceChildren(feedbackBox(
+          correct, correct ? "Tepat! +100" : (c.legit ? "Sebenarnya produk ini SAH" : "Sebenarnya produk ini perlu DITOLAK"),
+          c.exp, last ? "Selesai →" : "Kad Seterusnya →",
+          () => { sfx.tap(); locked = false; if (last) finishStage(); else { i++; render(); } }
+        ));
+      }
+
+      noBtn.onclick = () => decide(false);
+      yesBtn.onclick = () => decide(true);
+      render();
+    }
+
+    // -------------------------------------------------------------
+    // STAGE 2: TAP-TO-MATCH
+    // -------------------------------------------------------------
+    function runMatchStage(root) {
+      const totalSlots = MATCH_ROUNDS.reduce((n, r) => n + r.slots.length, 0);
+      let placedTotal = 0;
+      let r = 0;
+
+      function playRound() {
+        const round = MATCH_ROUNDS[r];
+        let selected = null;
+        const missed = new Set();
+        let placed = 0;
+
+        const parts = [el("p", { class: "prompt" }, `Bahagian ${r + 1}: ${round.title}`)];
+        if (round.showLabel) {
+          parts.push(el("div", { class: "rx-label", "aria-label": "Contoh label sampul ubat" }, [
+            el("div", { class: "rx-head" }, "KLINIK KESIHATAN"),
+            el("div", {}, ["NAMA: ", el("b", {}, "Ali bin Abu")]),
+            el("div", {}, ["AMBIL: ", el("b", {}, "2 biji"), ", ", el("b", {}, "3 kali sehari")]),
+            el("div", {}, ["☑ ", el("b", {}, "Selepas makan")]),
+            el("div", {}, ["NAMA UBAT: ", el("b", {}, "Mefenamic Acid 250mg")]),
+            el("div", { class: "rx-foot" }, "UBAT TERKAWAL • JAUHI DARIPADA KANAK-KANAK")
+          ]));
         }
+
+        const tray = el("div", { class: "tray" });
+        const chips = shuffle(round.slots.map((s) => s.answer)).map((text) => {
+          const chip = el("button", { type: "button", class: "chip", "aria-pressed": "false" }, text);
+          chip.onclick = () => {
+            sfx.tap();
+            tray.querySelectorAll(".chip").forEach((c) => { c.classList.remove("selected"); c.setAttribute("aria-pressed", "false"); });
+            if (selected === chip) { selected = null; slotsEl.querySelectorAll(".slot").forEach((s) => s.classList.remove("ready")); return; }
+            selected = chip;
+            chip.classList.add("selected");
+            chip.setAttribute("aria-pressed", "true");
+            slotsEl.querySelectorAll(".slot:not(.done)").forEach((s) => s.classList.add("ready"));
+          };
+          return chip;
+        });
+        tray.append(...chips);
+
+        const slotsEl = el("div", { class: "slots" });
+        round.slots.forEach((s) => {
+          const fill = el("span", { class: "slot-fill" });
+          const slot = el("button", { type: "button", class: "slot" }, [
+            el("span", { class: "slot-num", "aria-hidden": "true" }, s.num),
+            el("span", { class: "slot-label" }, [s.label, el("br"), fill])
+          ]);
+          slot.onclick = () => {
+            if (slot.classList.contains("done")) return;
+            if (!selected) { toast("Tekan satu kad biru dahulu, kemudian tekan tempat ini."); return; }
+            const text = selected.textContent;
+            if (text === s.answer) {
+              if (!missed.has(text)) addPoints(50);
+              sfx.good();
+              fill.textContent = "✓ " + text;
+              slot.classList.remove("ready");
+              slot.classList.add("done");
+              selected.remove();
+              selected = null;
+              slotsEl.querySelectorAll(".slot").forEach((x) => x.classList.remove("ready"));
+              placed++; placedTotal++;
+              setProgress(placedTotal, totalSlots);
+              if (placed === round.slots.length) roundDone();
+            } else {
+              missed.add(text);
+              sfx.bad();
+              slot.classList.remove("wrong"); void slot.offsetWidth; slot.classList.add("wrong");
+              setTimeout(() => slot.classList.remove("wrong"), 700);
+              toast(`"${text}" bukan untuk ${s.label.replace(/🕗 /g, "")}. Cuba lagi!`);
+            }
+          };
+          slotsEl.append(slot);
+        });
+
+        parts.push(tray, slotsEl);
+        root.replaceChildren(...parts);
+      }
+
+      function roundDone() {
+        const last = r === MATCH_ROUNDS.length - 1;
+        root.append(feedbackBox(true, last ? "Semua dipadankan!" : "Bahagian selesai!",
+          last ? "3 kali sehari = setiap 8 jam, contohnya 6 pagi, 2 petang dan 10 malam."
+               : "Semua maklumat Konsep 5B boleh didapati pada label ubat anda.",
+          last ? "Selesai →" : "Bahagian Seterusnya →",
+          () => { sfx.tap(); if (last) finishStage(); else { r++; playRound(); window.scrollTo(0, 0); } }));
+      }
+
+      playRound();
+    }
+
+    // -------------------------------------------------------------
+    // STAGE 3: HOUSE (tap-to-fix) + SORTING
+    // -------------------------------------------------------------
+    function runHouseStage(root) {
+      const totalMeds = ROOMS.reduce((n, rm) => n + rm.spots.filter((s) => s.med).length, 0);
+      const totalSteps = totalMeds + SORT_ITEMS.length;
+      let found = 0;
+      let safeCount = 0;
+      let hintTimer = null;
+
+      const counter = el("p", { class: "prompt" });
+      const safeSpots = [];
+      const updateCounter = () => { counter.textContent = `Cari ubat 💊 di tempat salah: ${found} / ${totalMeds}`; };
+
+      const house = el("div", { class: "house" });
+      ROOMS.forEach((rm) => {
+        const room = el("div", { class: "room" + (rm.wide ? " wide" : ""), style: `background:${rm.bg}` },
+          [el("p", { class: "room-name" }, rm.name)]);
+        rm.spots.forEach((s) => {
+          const spot = el("button", { type: "button", class: "spot" + (s.safe ? " safe" : "") }, [
+            el("span", { class: "fe", "aria-hidden": "true" }, s.fe),
+            el("span", {}, s.label)
+          ]);
+          if (s.med) {
+            spot.append(el("span", { class: "med", "aria-hidden": "true" }, "💊"));
+            spot.setAttribute("aria-label", s.label + ": ada ubat di sini");
+          }
+          if (s.safe) safeSpots.push(spot);
+          spot.onclick = () => {
+            if (s.safe) { toast("✓ Betul! Kabinet bahagian atas ialah tempat paling selamat untuk ubat.", true); sfx.tap(); return; }
+            if (!s.med || spot.classList.contains("fixed")) {
+              sfx.tap();
+              spot.classList.remove("nope"); void spot.offsetWidth; spot.classList.add("nope");
+              return;
+            }
+            spot.classList.add("fixed");
+            spot.classList.remove("hint");
+            spot.setAttribute("aria-label", s.label + ": sudah dialihkan");
+            found++; safeCount++;
+            addPoints(50);
+            sfx.good();
+            safeSpots.forEach((x) => { x.lastElementChild.textContent = `Kabinet bahagian atas ✓ (${safeCount} ubat)`; });
+            toast("+50 " + s.med + " Ubat dialihkan ke kabinet bahagian atas.", true, 3200);
+            updateCounter();
+            setProgress(found, totalSteps);
+            resetHint();
+            if (found === totalMeds) setTimeout(startSorting, 900);
+          };
+          room.append(spot);
+        });
+        house.append(room);
       });
 
-      const box = $("feedback-box");
-      if (selectedOpt.correct) {
-        score += POINTS_PER_QUESTION;
-        $("live-score").textContent = score;
-        box.className = "feedback good";
-        $("feedback-icon").textContent = "🎉";
-        $("feedback-title").textContent = "Jawapan Tepat!";
-      } else {
-        btnElement.classList.add("is-wrong");
-        btnElement.querySelector(".mark").textContent = "✗";
-        box.className = "feedback info";
-        $("feedback-icon").textContent = "💡";
-        $("feedback-title").textContent = "Info Meditips:";
+      // After 25s without progress, make the remaining medicines bounce harder.
+      function resetHint() {
+        clearTimeout(hintTimer);
+        hintTimer = setTimeout(() => {
+          house.querySelectorAll(".spot").forEach((sp) => { if (sp.querySelector(".med") && !sp.classList.contains("fixed")) sp.classList.add("hint"); });
+        }, 25000);
       }
-      $("feedback-desc").textContent = selectedOpt.exp;
-      $("next-btn").innerHTML = currentQuestionIndex === gameQuestions.length - 1 ? "Lihat Keputusan &rarr;" : "Teruskan &rarr;";
 
-      setProgress(currentQuestionIndex + 1);
-      box.hidden = false;
-      box.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      $("next-btn").focus({ preventScroll: true });
+      updateCounter();
+      root.append(counter, house);
+      resetHint();
+
+      function startSorting() {
+        clearTimeout(hintTimer);
+        let k = 0;
+        function showItem() {
+          const item = SORT_ITEMS[k];
+          const bins = BINS.map((b) => el("button", { type: "button", class: "bin" }, [el("span", { class: "be", "aria-hidden": "true" }, b.emoji), b.label]));
+          const fb = el("div");
+          bins.forEach((btn, idx) => {
+            btn.onclick = () => {
+              const pick = BINS[idx].id;
+              bins.forEach((b) => { b.disabled = true; });
+              bins[BINS.findIndex((b) => b.id === item.answer)].classList.add("right");
+              const correct = pick === item.answer;
+              let desc = item.exp;
+              if (!correct) {
+                btn.classList.add("wrongpick");
+                if (pick === "trash" || pick === "sink") desc = "Jangan! Ubat yang dibuang ke tong sampah, sinki atau tandas mencemarkan sumber air minuman. " + item.exp;
+                else if (pick === "keep") desc = "Jangan simpan ubat yang luput, rosak atau tidak berlabel. " + item.exp;
+              }
+              if (correct) { addPoints(50); sfx.good(); } else { sfx.bad(); }
+              setProgress(totalMeds + k + 1, totalSteps);
+              const last = k === SORT_ITEMS.length - 1;
+              fb.replaceChildren(feedbackBox(correct, correct ? "Tepat! +50" : "Kurang tepat", desc, last ? "Selesai →" : "Seterusnya →",
+                () => { sfx.tap(); if (last) finishStage(); else { k++; showItem(); } }));
+            };
+          });
+          root.replaceChildren(
+            el("p", { class: "prompt" }, `Semak & asingkan ubat lama (${k + 1} / ${SORT_ITEMS.length})`),
+            el("div", { class: "item-card" }, [
+              el("div", { class: "ie", "aria-hidden": "true" }, item.emoji),
+              el("p", { class: "in" }, item.name),
+              el("p", { class: "small", style: "margin:0" }, item.detail)
+            ]),
+            el("div", { class: "bin-grid" }, bins),
+            fb
+          );
+          window.scrollTo(0, 0);
+        }
+        toast("Hebat! Semua ubat kini disimpan dengan selamat.", true);
+        showItem();
+      }
     }
 
-    function nextQuestion() {
-      triggerHaptic("light");
-      currentQuestionIndex++;
-      if (currentQuestionIndex < gameQuestions.length) {
-        loadQuestion();
-      } else {
-        showClaimScreen();
+    // -------------------------------------------------------------
+    // STAGE 4: RAPID FIRE
+    // -------------------------------------------------------------
+    function runRapidStage(root) {
+      const qs = shuffle(RAPID);
+      let i = 0;
+
+      function ask() {
+        const q = qs[i];
+        const bar = el("div");
+        const timer = el("div", { class: "timer", "aria-hidden": "true" }, bar);
+        const secs = el("p", { class: "small", style: "margin:0 0 6px;text-align:right;font-weight:800" }, `${RAPID_SECONDS} s`);
+        const mitos = el("button", { type: "button", class: "btn btn-no" }, "MITOS");
+        const fakta = el("button", { type: "button", class: "btn btn-yes" }, "FAKTA");
+        const bonus = el("p", { class: "bonus" });
+        const fb = el("div");
+        root.replaceChildren(
+          el("p", { class: "prompt" }, `Soalan ${i + 1} / ${qs.length}`),
+          secs, timer,
+          el("div", { class: "statement" }, q.text),
+          el("div", { class: "mf-buttons" }, [mitos, fakta]),
+          bonus, fb
+        );
+        setProgress(i, qs.length);
+
+        const started = performance.now();
+        let answered = false;
+        clearInterval(rapidTimer);
+        rapidTimer = setInterval(() => {
+          const left = Math.max(0, RAPID_SECONDS - (performance.now() - started) / 1000);
+          bar.style.width = (left / RAPID_SECONDS) * 100 + "%";
+          bar.classList.toggle("low", left < 3);
+          secs.textContent = Math.ceil(left) + " s";
+          if (left <= 0) answer(null);
+        }, 100);
+
+        function answer(saidFact) {
+          if (answered) return;
+          answered = true;
+          clearInterval(rapidTimer);
+          mitos.disabled = fakta.disabled = true;
+          const left = Math.max(0, RAPID_SECONDS - (performance.now() - started) / 1000);
+          const correct = saidFact === q.fact;
+          let title;
+          if (correct) {
+            const pts = 50 + Math.round(left * 5);
+            addPoints(pts);
+            sfx.good();
+            bonus.textContent = `+${pts} mata ⚡`;
+            title = "Tepat!";
+          } else {
+            sfx.bad();
+            title = saidFact === null ? "⏰ Masa tamat!" : "Kurang tepat";
+          }
+          (q.fact ? fakta : mitos).style.outline = "4px solid var(--amber-500)";
+          setProgress(i + 1, qs.length);
+          const last = i === qs.length - 1;
+          fb.replaceChildren(feedbackBox(correct, title, q.exp, last ? "Selesai →" : "Seterusnya →",
+            () => { sfx.tap(); if (last) finishStage(); else { i++; ask(); } }));
+        }
+
+        mitos.onclick = () => answer(false);
+        fakta.onclick = () => answer(true);
       }
+
+      ask();
     }
 
+    // -------------------------------------------------------------
+    // CONFETTI
+    // -------------------------------------------------------------
+    function confetti(ms) {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const canvas = $("confetti");
+      const ctx = canvas.getContext("2d");
+      canvas.width = innerWidth; canvas.height = innerHeight;
+      canvas.hidden = false;
+      const colors = ["#2563eb", "#10b981", "#f59e0b", "#e11d48", "#7c3aed"];
+      const parts = Array.from({ length: 120 }, () => ({
+        x: Math.random() * canvas.width, y: -20 - Math.random() * canvas.height * 0.5,
+        vx: (Math.random() - 0.5) * 3, vy: 2 + Math.random() * 3,
+        s: 5 + Math.random() * 6, r: Math.random() * 6, c: colors[Math.floor(Math.random() * colors.length)]
+      }));
+      const end = performance.now() + ms;
+      (function frame(now) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        parts.forEach((p) => {
+          p.x += p.vx; p.y += p.vy; p.r += 0.1;
+          ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r);
+          ctx.fillStyle = p.c; ctx.fillRect(-p.s / 2, -p.s / 2, p.s, p.s * 0.6);
+          ctx.restore();
+        });
+        if (now < end) requestAnimationFrame(frame);
+        else canvas.hidden = true;
+      })(performance.now());
+    }
+
+    // -------------------------------------------------------------
+    // CLAIM SCREEN, REGISTRATION & VOUCHER
+    // -------------------------------------------------------------
     function showClaimScreen() {
       showScreen("screen-claim");
-      $("final-score-display").textContent = `${score} / ${maxScore()}`;
-      $("claim-title").textContent = score === maxScore() ? "Cemerlang, Wira Ubat!" : "Tahniah, Wira Ubat!";
+      const total = totalScore(), max = maxScore(), ratio = total / max;
+      $("final-score-display").textContent = `${total} / ${max}`;
+      const rank = ratio >= 0.85 ? ["🥇", "Wira Ubat Emas"] : ratio >= 0.6 ? ["🥈", "Wira Ubat Perak"] : ["🥉", "Wira Ubat Gangsa"];
+      $("claim-medal").textContent = rank[0];
+      $("final-rank").textContent = "Pangkat anda: " + rank[1];
+      $("claim-title").textContent = ratio >= 0.85 ? "Cemerlang, Wira Ubat!" : "Tahniah, Wira Ubat!";
+      confetti(2500);
 
       const saved = store.get("voucher");
       if (ONE_VOUCHER_PER_DEVICE && saved) {
@@ -640,13 +1397,11 @@
       } else {
         $("reg-form-box").hidden = false;
         $("voucher-box").hidden = true;
+        $("submit-btn").disabled = false;
+        $("submit-btn").textContent = "Jana Baucar Cenderahati Saya";
       }
       $("claim-title").focus({ preventScroll: true });
     }
-
-    // -------------------------------------------------------------
-    // REGISTRATION & VOUCHER
-    // -------------------------------------------------------------
 
     // Fallback code used only when the Sheet can't be reached. The Sheet normally issues the code.
     // Ambiguous characters (0/O, 1/I) are left out so staff can read it off a screen.
@@ -696,11 +1451,11 @@
       $("form-error").textContent = error;
       if (error) return;
 
-      triggerHaptic("light");
+      sfx.tap();
       submitBtn.disabled = true;
       submitBtn.textContent = "Menjana Kod Baucar...";
 
-      const payload = { name, contact, consent: true, score, maxScore: maxScore() };
+      const payload = { name, contact, consent: true, score: totalScore(), maxScore: maxScore() };
       let voucher = null;
 
       if (isBackendConfigured()) {
@@ -754,6 +1509,7 @@
       if (!saved) return;
       showScreen("screen-claim");
       $("final-score-display").textContent = "";
+      $("final-rank").textContent = "";
       showVoucher(saved);
     }
 
@@ -799,7 +1555,8 @@
     flushPending();
 
     // Start screen: offer the saved voucher if this phone already has one.
-    (function initStartScreen() {
+    (function init() {
+      updateMuteButton();
       const saved = store.get("voucher");
       if (ONE_VOUCHER_PER_DEVICE && saved) {
         $("resume-code").textContent = saved.serial;
